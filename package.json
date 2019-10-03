@@ -1,0 +1,32 @@
+{
+  "name": "interview-mds",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development node server.js",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production node server.js",
+    "export": "next export",
+    "knex": "knex"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bookshelf": "^1.0.0",
+    "dotenv": "^8.1.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "knex": "^0.19.4",
+    "koa": "^2.8.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.15",
+    "mysql": "^2.17.1",
+    "next": "^9.0.7",
+    "nprogress": "^0.2.0",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1"
+  }
+}
