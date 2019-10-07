@@ -1,12 +1,11 @@
-module.exports = bookshelf => {
-    const QuestionComment = bookshelf.model('QuestionComment', {
-        tableName: 'question_comments',
-        hasTimestamp: true,
+class QuestionComment extends globalThis.bookshelf.Model {
+    get tableName() {
+        return 'question_comments'
+    }
 
-        question() {
-            this.belongsTo('Question')
-        }
-    })
-
-    return QuestionComment
+    question() {
+        this.belongsTo('Question')
+    }
 }
+
+module.exports = globalThis.bookshelf.model('QuestionComment', QuestionComment)

@@ -1,49 +1,61 @@
-const _ = require('lodash')
 const assert = require('assert')
 
-module.exports = bookshelf => {
-    const User = bookshelf.model('User', {
-        tableName: 'users',
-        hasTimestamps: true,
-        hidden: ['password_hash', 'auth_token'],
-
-        questions() {
-            return this.hasMany('Question')
-        },
-    })
-
-    User.findAll = async () => {
-        return await User.fetchAll()
+class User extends globalThis.bookshelf.Model {
+    get tableName() {
+        return 'users'
+    }
+    get hidden() {
+        return ['password_hash']
     }
 
-    User.findOne = async (id) => {
-        return await User.where({ id }).fetch()
+    questions() {
+        return this.hasMany('Question')
     }
 
-    User.create = async (data) => {
-        assert(_.isObject(data))
-
-        try {
-            const user = new User(data)
-            return await user.save()
-        } catch {
-            return null
+    static async findAll(filter = {}, options = {}) {
+        options = {
+            ...options,
+            withRelated: [
+                { questions: query => query.where('active', 1)}
+            ]
         }
-        
+        return await super.findAll(filter, options)
     }
 
-    User.update = async (id, data) => {
-        assert(_.isObject(data))
+    static async createOrFail(data) {
+        assert(data.email)
 
-        try {
-            const user = await User.where({ id }).fetch()
-            return await user.save(data)
-        } catch {
-            return null
+        const promise = new Promise((resolve, reject) => {
+            const { email } = data
+            this.findOne({ email })
+            .then(() => reject(new Error('Такой пользователь существует')))
+            .catch(() => resolve())
+        })
+        await promise
+
+        return await this.create(data)
+    }
+
+    static async findOrCreate(filter, data) {
+        assert(filter)
+        assert(data)
+
+        const promise = new Promise((resolve, reject) => {
+            this.findOne(filter)
+                .then(user => resolve(user))
+                .catch(() => resolve(null))
+        })
+
+        const user = await promise
+        if (user) {
+            return user
         }
+
+        const newUser = await this.create(data)
+        return await newUser
     }
 
-    
-    return User
 }
 
+
+module.exports = globalThis.bookshelf.model('User', User)

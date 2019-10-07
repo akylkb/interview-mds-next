@@ -1,28 +1,25 @@
 require('dotenv').config()
+require('./config/bookshelf')
+
 const Koa = require('koa')
 const Router = require('koa-router')
+const passport = require('koa-passport')
 const next = require('next')
-const apiRoutes = require('./routes/api')
-const nextRoutes = require('./routes/next')
 
 const port = parseInt(process.env.APP_PORT) || 3000
 const dev = process.env.NODE_ENV === 'development'
 const nextApp = next({ dev })
-
 const router = new Router()
+const server = new Koa()
 
-apiRoutes(router)
-nextRoutes(router, nextApp)
+require('./config/passport')(passport)
+require('./config/routes/api')(router, passport)
+require('./config/routes/next')(nextApp, router, passport)
+require('./config/koa')(server, router, passport)
+
 
 nextApp.prepare().then(() => {
-    const server = new Koa()
-    
-    server.use(async (ctx, next) => {
-        ctx.res.statusCode = 200
-        await next()
-    })
-
-    server.use(router.routes())
+    server.use(passport.initialize())
     server.listen(port, () => {
         console.log('ready on', port)        
     })

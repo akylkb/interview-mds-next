@@ -14,8 +14,7 @@ exports.up = function(knex) {
     .createTable('question_likes', table => {
       table.increments('id').primary()
       table.integer('user_id').unsigned().references('users.id')
-      table.integer('question_id').unsigned.references('questions.id')
-      table.timestamp('created_at').defaultTo(knex.fn.now())
+      table.integer('question_id').unsigned().references('questions.id')
     })
     .createTable('question_comments', table => {
       table.increments('id').primary()
@@ -30,7 +29,6 @@ exports.up = function(knex) {
       table.increments('id').primary()
       table.integer('user_id').unsigned().references('users.id')
       table.integer('question_comment_id').unsigned().references('question_comments.id')
-      table.timestamp('created_at').defaultTo(knex.fn.now())
     })
 
 };
@@ -39,4 +37,6 @@ exports.down = function(knex) {
   return knex.schema
     .dropTable('questions')
     .dropTable('question_comments')
+    .dropTable('question_comment_likes')
+    .dropTable('question_likes')
 };

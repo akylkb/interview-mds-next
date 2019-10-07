@@ -1,6 +1,39 @@
-const {User} = require('../models')
+const User = require('../models/user')
+const { asyncGenerateHash, asyncCheckHash } = require('../utils/helpers')
 
 class UserController {
+
+    static async signup(ctx) {
+        const {password, ...data} = ctx.request.body
+        const password_hash = await asyncGenerateHash(password)
+        try {
+            let user = await User.createOrFail({...data, password_hash, provider: 'local'})
+            user = user.toJSON()
+            if (typeof ctx.login === 'function') { ctx.login(user) }
+            ctx.success = user
+            ctx.status = 201
+        } catch (err) {
+            ctx.failure = err.message
+        }
+    }
+
+    static async signin(ctx) {
+        try {
+            const { email, password } = ctx.request.body
+            let user = await User.findOne({ email })
+            const passwordHash = user.get('password_hash')
+            
+            const valid = await asyncCheckHash(password, passwordHash)
+            if (!valid) { return ctx.failure = 'Неправильный пароль' }
+            
+            user = user.toJSON()
+            if (typeof ctx.login === 'function') { ctx.login(user) }
+            ctx.success = user
+        } catch (err) {
+            console.error(err)
+            ctx.failure = 'Проверьте правильность email и пароля'
+        }   
+    }
     
     static async findAll(ctx) {
         const users = await User.findAll()

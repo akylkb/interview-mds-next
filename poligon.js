@@ -1,10 +1,5 @@
-const { User } = require('./http/models')
+require('./http/bookshelf')
+const User = require('./http/models/user')
 
 
-
-
-;(async () => {
-    const user = await User.where({id: 1}).fetch({ withRelated: ['questions']})
-    console.log(user.related('questions').toJSON())
-    
-})()
+User.findAll().then(user => console.log(user.toJSON()))

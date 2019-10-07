@@ -1,4 +1,4 @@
-const { Question } = require('../models')
+const  Question = require('../models/question')
 
 class QuestionController {
     static async findAll(ctx) {
