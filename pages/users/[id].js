@@ -5,7 +5,7 @@ import Developed from '../../components/developed'
 const User = ({ query }) => {
   return (
     <Layout>
-      <PageHeader title={`Пользователь: ${query.id}`} />
+      <PageHeader title={`Профиль ${query.id}`} />
       <Developed />
     </Layout>
   )

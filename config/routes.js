@@ -1,20 +1,34 @@
 const UserController = require('../http/controllers/userController')
 const QuestionController = require('../http/controllers/questionController')
 const CommentController = require('../http/controllers/commentController')
+const AdminController = require('../http/controllers/adminController')
 const validator = require('./middlewares/validator')
 const { loginRequired, adminRequired } = require('./middlewares/auth')
 const schemas = require('./schemas')
+const token = require('../http/utils/token')
 
 module.exports = (server, router, passport) => {
-  router.post('/signup', validator(schemas.sign), UserController.signup)
-  router.post('/signin', validator(schemas.sign), UserController.signin)
+  router.post('/signup', validator(schemas.signup), UserController.signup)
+  router.post('/signin', validator(schemas.signin), UserController.signin)
   router.get('/logout', UserController.logout)
 
   const authCallback = (strategyName) => {
-    return passport.authenticate(strategyName, {
-      failureRedirect: '/auth-failure',
-      successRedirect: '/'
-    })
+    return (ctx, next) => passport.authenticate(strategyName, (err, user) => {
+      if (err) {
+        ctx.status = 500
+        ctx.body = err.message
+        return console.error(err)
+      }
+
+      if (user) {
+        const encodedToken = token.encode({ id: user.id })
+        ctx.cookies.set('token', encodedToken)
+        ctx.login(user)
+        ctx.redirect('/')
+        return
+      }
+      ctx.redirect('/auth-fail')
+    })(ctx)
   }
   router.get('/auth/facebook', passport.authenticate('facebook'))
   router.get('/auth/facebook/callback', authCallback('facebook'))
@@ -25,14 +39,20 @@ module.exports = (server, router, passport) => {
   router.get('/auth/vk', passport.authenticate('vkontakte'))
   router.get('/auth/vk/callback', authCallback('vkontakte'))
 
-  router.get('/test', passport.authenticate('jwt', { session: false }), ctx => {
-    ctx.cookies.set('token', 'lasjdflkjasdfj')
-    console.log('state:', ctx.state)
-    console.log('keys:', ctx.keys)
-    ctx.body = 'test'
-  })
+  router.get('/test',
+    loginRequired,
+    ctx => {
+      ctx.body = 'test'
+    }
+  )
 
+  router.get('/api/profile/me', loginRequired, ctx => {
+    ctx.body = ctx.state.user.toJSON()
+  })
   // admin
+  router.get('/api/admin/questions', adminRequired, AdminController.getQuestions)
+  router.put('/api/admin/questions/:id', adminRequired, AdminController.updateQuestion)
+  router.delete('/api/admin/questions/:id', adminRequired, AdminController.deleteQuestion)
   router.all('/admin*', adminRequired)
 
   // next

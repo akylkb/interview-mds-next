@@ -18,11 +18,13 @@ const clearData = (obj, allowedKeys = []) => {
 
 const asyncGenerateHash = async text => {
   const saltRounds = 10
-  return await bcrypt.hash(text, saltRounds)
+  const result = await bcrypt.hash(text, saltRounds)
+  return result
 }
 
 const asyncCheckHash = async (text, hash) => {
-  return await bcrypt.compare(text, hash)
+  const result = await bcrypt.compare(text, hash)
+  return result
 }
 
 module.exports = {

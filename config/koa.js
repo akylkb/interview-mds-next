@@ -1,5 +1,4 @@
 const bodyParser = require('koa-bodyparser')
-const session = require('koa-session')
 const jsonResponse = require('./middlewares/json-response')
 
 module.exports = (server, router) => {
@@ -16,8 +15,7 @@ module.exports = (server, router) => {
       console.error(err)
     }
   })
-  server.keys = ['a866bcc12f7bc9e7eeabe768368079c6']
-  server.use(session({}, server))
+
   server.use(jsonResponse())
   server.use(bodyParser())
 }

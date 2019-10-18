@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Icon from './icon'
 
@@ -11,7 +12,9 @@ const Item = ({ number = 0, isCurrent = false, onClick }) => {
   }
   return (
     <li>
-      <a onClick={onClick} className={`pagination-link ${isCurrent ? 'is-current' : ''}`}>{number}</a>
+      <Link href={`?page=${number}`}>
+        <a className={`pagination-link ${isCurrent ? 'is-current' : ''}`}>{number}</a>
+      </Link>
     </li>
   )
 }

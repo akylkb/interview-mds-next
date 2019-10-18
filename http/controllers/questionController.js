@@ -20,8 +20,10 @@ class QuestionController {
   static async create (ctx) {
     const data = ctx.request.body
     const user = ctx.state.user
+    const active = ctx.state.user.get('group') === 'admin'
     const result = await Question.create({
       ...data,
+      active,
       user_id: user.id
     })
     ctx.success = result.toJSON()

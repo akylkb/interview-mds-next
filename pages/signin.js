@@ -7,6 +7,7 @@ import Icon from '../components/icon'
 import Layout from '../components/layout'
 import PageHeader from '../components/page-header'
 import { serializeForm } from '../utils/helpers'
+import Notify from '../components/notify'
 
 const Signin = () => {
   const [isLoading, hasLoading] = useState(false)
@@ -86,7 +87,7 @@ const Signin = () => {
             <p className="help">Забыли пароль? <Link href="/forgot-password"><a>Восстановить</a></Link></p>
           </div>
 
-          {message && <div className="notification is-danger">{message}</div>}
+          {message && <Notify message={message} onClose={() => setMessage('')} />}
 
           <div className="field">
             <div className="control">

@@ -42,7 +42,7 @@ const ListItemComment = ({ item }) => {
   return (
     <article className="media">
       <div className="media-left">
-        <Avatar id={user.id} image={user.avatar} stars />
+        <Avatar id={user.id} image={user.avatar} />
       </div>
       <div className="media-content">
         <div className="content">

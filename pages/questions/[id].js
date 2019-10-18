@@ -11,8 +11,17 @@ import Icon from '../../components/icon'
 import ListComments from '../../components/list-comments'
 import CommentForm from '../../components/comment-form'
 import Spinner from '../../components/spinner'
+import NotFound from '../../components/not-found'
 
 const QuestionDetails = ({ question, comments: initialComments = [] }) => {
+  if (!question.id) {
+    return (
+      <Layout>
+        <NotFound />
+      </Layout>
+    )
+  }
+
   const {
     id,
     title,
@@ -111,18 +120,26 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
 }
 
 QuestionDetails.getInitialProps = async ({ query }) => {
-  const APP_URL = process.env.APP_URL
-  const questionPromise = axios.get(`${APP_URL}/api/questions/${query.id}`)
-  const commentsPromise = axios.get(`${APP_URL}/api/questions/${query.id}/comments`)
-  const [questionResponse, commentsResponse] = await Promise.all([questionPromise, commentsPromise])
+  try {
+    const APP_URL = process.env.APP_URL
+    const questionPromise = axios.get(`${APP_URL}/api/questions/${query.id}`)
+    const commentsPromise = axios.get(`${APP_URL}/api/questions/${query.id}/comments`)
+    const [questionResponse, commentsResponse] = await Promise.all([questionPromise, commentsPromise])
 
-  const { data: question } = questionResponse.data
-  const { data: comments } = commentsResponse.data
+    const { data: question } = questionResponse.data
+    const { data: comments } = commentsResponse.data
 
-  return {
-    question,
-    comments,
-    query
+    return {
+      question,
+      comments,
+      query
+    }
+  } catch (err) {
+    return {
+      question: {},
+      comments: [],
+      query
+    }
   }
 }
 

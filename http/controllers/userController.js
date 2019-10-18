@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const { asyncGenerateHash, asyncCheckHash } = require('../utils/helpers')
+const token = require('../utils/token')
 
 class UserController {
   static async signup (ctx) {
@@ -8,8 +9,13 @@ class UserController {
     try {
       let user = await User.createOrFail({ ...data, password_hash, provider: 'local' })
       user = user.toJSON()
-      if (typeof ctx.login === 'function') { ctx.login(user) }
-      ctx.success = user
+      if (typeof ctx.login === 'function') {
+        const encodedToken = token.encode({ id: user.id })
+        ctx.cookies.set('token', encodedToken)
+        ctx.login(user)
+      }
+      // ctx.success = user
+      ctx.redirect('/')
       ctx.status = 201
     } catch (err) {
       ctx.failure = err.message
@@ -29,7 +35,11 @@ class UserController {
       }
 
       user = user.toJSON()
-      if (typeof ctx.login === 'function') { ctx.login(user) }
+      if (typeof ctx.login === 'function') {
+        const encodedToken = token.encode({ id: user.id })
+        ctx.cookies.set('token', encodedToken)
+        ctx.login(user)
+      }
       ctx.success = user
     } catch (err) {
       console.error(err)
@@ -39,6 +49,7 @@ class UserController {
 
   static async logout (ctx) {
     ctx.logout()
+    ctx.cookies.set('token', '')
     ctx.redirect('/')
   }
 

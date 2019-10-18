@@ -13,19 +13,13 @@ Router.events.on('routeChangeError', () => NProgress.done())
 
 export default class MyApp extends App {
   static async getInitialProps (appContext) {
-    let user = null
-    try {
-      user = appContext.ctx.req.user.toJSON()
-    } catch {
-      user = null
-    }
     // calls page's `getInitialProps` and fills `appProps.pageProps`
     const appProps = await App.getInitialProps(appContext)
-    return { user, ...appProps }
+    return { ...appProps }
   }
 
   render () {
-    const { Component, pageProps, user } = this.props
+    const { Component, pageProps } = this.props
     return (
       <>
         <Head>
@@ -33,7 +27,7 @@ export default class MyApp extends App {
           <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
           <link rel="stylesheet" type="text/css" href="/static/font-awesome.css" />
         </Head>
-        <UserProvider user={user}>
+        <UserProvider>
           <Component {...pageProps} />
         </UserProvider>
       </>

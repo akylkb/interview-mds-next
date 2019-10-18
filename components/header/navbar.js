@@ -70,15 +70,15 @@ const Navbar = () => {
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">{user.name || 'Профиль'}</a>
               <div className="navbar-dropdown profile-dropdown">
-                <Link href="/users/[id]" as={`/users/${user.id}`}>
+                {/* <Link href="/users/[id]" as={`/users/${user.id}`}>
                   <a className="navbar-item">Мой профиль</a>
-                </Link>
-                <Link href="/my/questions">
+                </Link> */}
+                {/* <Link href="/my/questions">
                   <a className="navbar-item">Мои вопросы</a>
-                </Link>
-                <Link href="/my/settings">
+                </Link> */}
+                {/* <Link href="/my/settings">
                   <a className="navbar-item">Настройки</a>
-                </Link>
+                </Link> */}
                 <hr className="navbar-divider" />
                 <a href="/logout" className="navbar-item">Выйти</a>
               </div>

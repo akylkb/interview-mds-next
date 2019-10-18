@@ -17,18 +17,16 @@ module.exports = () => {
     secretOrKey: process.env.JWT_SECRET,
     jwtFromRequest
   }, async (jwtPayload, done) => {
-    console.log('jwtPayload', jwtPayload)
-    // User.findOne({ id: jwtPayload.sub }, function (err, user) {
-    //   if (err) {
-    //     return done(err, false)
-    //   }
-    //   if (user) {
-    //     return done(null, user)
-    //   } else {
-    //     return done(null, false)
-    //     // or you could create a new account
-    //   }
-    // })
-    done(null, false)
+    console.log(jwtPayload)
+    try {
+      const user = await User.findById(jwtPayload.id)
+      if (user) {
+        return done(null, user)
+      }
+      return done(null, false)
+    } catch (err) {
+      console.error(err)
+      return done(err, false)
+    }
   })
 }

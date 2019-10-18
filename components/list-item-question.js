@@ -31,7 +31,7 @@ const ListItemQuestion = ({ item }) => {
   return (
     <div className="item">
       <div className="item-avatar">
-        <Avatar id={user.id} stars />
+        <Avatar id={user.id} />
       </div>
 
       <div className="item-title">

@@ -1,17 +1,42 @@
+import axios from 'axios'
+import { useState } from 'react'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook, faGoogle, faVk, faYandex } from '@fortawesome/free-brands-svg-icons'
 import Link from 'next/link'
 import Icon from '../components/icon'
 import Layout from '../components/layout'
 import PageHeader from '../components/page-header'
+import Notify from '../components/notify'
+import { serializeForm } from '../utils/helpers'
 
 const Signup = () => {
+  const [isLoading, hasLoading] = useState(false)
+  const [message, setMessage] = useState('')
+
+  const handleSubmit = event => {
+    event.preventDefault()
+    setMessage('')
+    hasLoading(true)
+    const data = serializeForm(event.target)
+    axios.post('/signup', data)
+      .then(() => {
+        window.location.href = '/'
+      })
+      .catch(err => {
+        const { data: { message } } = err.response
+        setMessage(message)
+      })
+      .finally(() => {
+        hasLoading(false)
+      })
+  }
+
   return (
     <Layout>
       <PageHeader title="Регистрация">
         <div className="title is-6">Уже зарегистрированы? <Link href="/signin"><a>Войти</a></Link></div>
       </PageHeader>
-      
+
       <section>
         <div className="auth-social">
           <a href="/auth/google" className="button is-fullwidth">
@@ -27,7 +52,7 @@ const Signup = () => {
             <Icon name={faYandex} />&nbsp; Регистрация через Яндекс
           </a>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="field">
             <label className="label">Отображаемое имя</label>
             <div className="control has-icons-left">
@@ -80,15 +105,17 @@ const Signup = () => {
           <div className="field">
             <div className="control">
               <label className="checkbox">
-                <input type="checkbox" /> Согласиться на не регулярную <a href="#">рассылку</a> обновлений продуктов,
+                <input type="checkbox" name="subscribed" /> Согласиться на не регулярную <a href="#">рассылку</a> обновлений продуктов,
               приглашений для участия в пользовательских исследованиях, анонсов компании и дайджестов.
               </label>
             </div>
           </div>
+          
+          {message && <Notify message={message} onClose={() => setMessage('')} />}
 
           <div className="field">
             <div className="control">
-              <button className="button is-primary is-fullwidth is-medium">Регистрация</button>
+              <button className={`button is-primary is-fullwidth is-medium ${isLoading ? 'is-loading' : ''}`}>Регистрация</button>
             </div>
           </div>
 

@@ -2,10 +2,16 @@ const Joi = require('@hapi/joi')
 
 module.exports = {
 
-  // signup, signin
-  sign: Joi.object({
+  signin: Joi.object({
     email: Joi.string().email().required().label('Email'),
-    password: Joi.string().min(6).required().label('Пароль')
+    password: Joi.string().min(6).required().label('Пароль'),
+  }),
+
+  signup: Joi.object({
+    email: Joi.string().email().required().label('Email'),
+    password: Joi.string().min(6).required().label('Пароль'),
+    name: Joi.string().required().label('Имя'),
+    subscribed: Joi.string().valid('on', 'off').default('off')
   }),
 
   // create, update

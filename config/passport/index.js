@@ -33,5 +33,6 @@ module.exports = function (server, passport) {
   passport.use(jwtStrategy())
 
   server.use(passport.initialize())
-  server.use(passport.session({}))
+  // TODO: сессия может сломать сервер если пользователя нет в базе, заменить на jwt
+  // server.use(passport.session({}))
 }

@@ -5,11 +5,19 @@ import Pagination from './pagination'
 const ListQuestions = ({ items, pagination }) => {
   const { page, pageCount } = pagination
 
+  if (items.length === 0) {
+    return <div className="notification">Пока вопросов нет</div>
+  }
+
   return (
-    <div>
-      {items.map(item => <ListItemQuestion key={item.id} item={item} />)}
-      <Pagination total={pageCount} current={page} onSelect={page => console.log('page selected', page)} />
-    </div>
+    <>
+      {items.map(item =>
+        <ListItemQuestion
+          key={item.id}
+          item={item}
+        />)}
+      <Pagination total={pageCount} current={page} />
+    </>
   )
 }
 

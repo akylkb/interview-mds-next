@@ -2,7 +2,7 @@ import Link from 'next/link'
 import axios from 'axios'
 import Layout from '../components/layout'
 import PageHeader from '../components/page-header'
-import ListQuestion from '../components/list-questions'
+import ListQuestions from '../components/list-questions'
 
 const Index = ({ data }) => {
   return (
@@ -29,7 +29,7 @@ const Index = ({ data }) => {
         </style>
       </PageHeader>
       <section>
-        <ListQuestion {...data} />
+        <ListQuestions {...data} />
       </section>
     </Layout>
   )
@@ -38,7 +38,9 @@ const Index = ({ data }) => {
 // <Link href="/users/[id]" as="/users/1">User</Link>
 Index.getInitialProps = async ({ query }) => {
   const APP_URL = process.env.APP_URL
-  const response = await axios.get(`${APP_URL}/api/questions`)
+  const response = await axios.get(`${APP_URL}/api/questions`, {
+    params: query
+  })
   const { data } = response.data
   return {
     data,
