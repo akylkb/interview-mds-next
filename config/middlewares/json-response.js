@@ -1,26 +1,24 @@
-const body = (success, rawData) => {
-    if (typeof rawData === 'object') {
-        const { message = '', ...data} = rawData
-        return {
-            success,
-            message,
-            data
-        }
-    }
+const body = (success, data) => {
+  if (typeof data === 'object') {
     return {
-        success,
-        message: rawData
+      success,
+      data
     }
+  }
+  return {
+    success,
+    message: data
+  }
 }
 
 module.exports = () => {
-    return async (ctx, next) => {
-        await next()
-        if (ctx.success) {
-            ctx.body = body(true, ctx.success)
-        } else if (ctx.failure) {
-            ctx.body = body(false, ctx.failure)
-            ctx.status = ctx.status === 200 ? 400 : ctx.status
-        }
+  return async (ctx, next) => {
+    await next()
+    if (ctx.success) {
+      ctx.body = body(true, ctx.success)
+    } else if (ctx.failure) {
+      ctx.body = body(false, ctx.failure)
+      ctx.status = ctx.status === 200 ? 400 : ctx.status
     }
+  }
 }

@@ -1,0 +1,27 @@
+
+.QuestionSuggest {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .button {
+    padding: 28px 15px;
+    font-size: 18px;
+  }
+  p {
+    padding-left: 1em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .QuestionSuggest {
+    flex-wrap: wrap;
+  }
+  .QuestionSuggest .button {
+    width: 100%;
+  }
+  .QuestionSuggest p {
+      padding-left: 0;
+      padding-top: 1em;
+  }
+}

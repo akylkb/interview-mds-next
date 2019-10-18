@@ -1,28 +1,62 @@
-const  Question = require('../models/question')
+const Question = globalThis.bookshelf.model('Question')
+const QuestionComment = globalThis.bookshelf.model('QuestionComment')
 
 class QuestionController {
-    static async findAll(ctx) {
-        ctx.body = await Question.findAll()
-    }
+  static async findAll (ctx) {
+    const { page } = ctx.request.query
+    const results = await Question.findAll({ active: true }, {
+      pageSize: 20,
+      page
+    })
+    ctx.success = results
+  }
 
-    static async findOne(ctx) {
-        const { id } = ctx.params
-        ctx.body = await Question.findOne(id)
-    }
+  static async findById (ctx) {
+    const { id } = ctx.params
+    const question = await Question.findById(id)
+    ctx.success = question
+  }
 
-    static async create(ctx) {
-        const data = ctx.request.body
-        ctx.body = await Question.create(data)
-    }
+  static async create (ctx) {
+    const data = ctx.request.body
+    const user = ctx.state.user
+    const result = await Question.create({
+      ...data,
+      user_id: user.id
+    })
+    ctx.success = result.toJSON()
+  }
 
-    static async update(ctx) {
-        ctx.body = 'update'
+  static async update (ctx) {
+    const { id } = ctx.params
+    const data = ctx.request.body
+    const user = ctx.state.user
+    const question = await Question.findById(id)
+    if (parseInt(question.get('user_id')) === parseInt(user.id)) {
+      const result = await Question.update(data, { id })
+      ctx.success = result.toJSON()
+      return
     }
+    ctx.failure = 'Запрещено'
+  }
 
-    static async delete(ctx) {
-        ctx.body = 'delete'
+  static async delete (ctx) {
+    const { id } = ctx.params
+    const user = ctx.state.user
+    const question = await Question.findById(id)
+    if (parseInt(question.get('user_id')) === parseInt(user.id)) {
+      await Question.destroy({ id })
+      ctx.success = 'ok'
+      return
     }
+    ctx.failure = 'Запрещено'
+  }
 
+  static async findComments (ctx) {
+    const { questionId } = ctx.params
+    const result = await QuestionComment.findAll({ question_id: questionId })
+    ctx.success = result
+  }
 }
 
 module.exports = QuestionController

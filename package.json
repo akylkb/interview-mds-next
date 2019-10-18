@@ -2,7 +2,7 @@
   "name": "interview-mds",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "NODE_ENV=development node server.js",
     "build": "NODE_ENV=production next build",
@@ -14,12 +14,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-brands-svg-icons": "^5.11.2",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@fortawesome/react-fontawesome": "^0.1.6",
     "@hapi/boom": "^8.0.1",
     "@hapi/joi": "^16.1.7",
     "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "bookshelf": "^1.0.0",
+    "classnames": "^2.2.6",
     "dotenv": "^8.1.0",
+    "draft-js": "^0.11.1",
     "isomorphic-unfetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.4",
@@ -35,10 +41,25 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "passport-vkontakte": "^0.3.2",
     "passport-yandex": "0.0.4",
+    "prop-types": "^15.7.2",
     "react": "^16.10.1",
-    "react-dom": "^16.10.1"
+    "react-dom": "^16.10.1",
+    "react-katex": "^2.0.2",
+    "react-render-html": "^0.6.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard-jsx": "^8.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-standard": "^4.0.1"
   }
 }

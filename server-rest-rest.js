@@ -13,7 +13,8 @@ require('./config/passport')(server, passport)
 require('./config/routes')(server, router, passport)
 require('./config/koa')(server, router, passport)
 
-
+server.use(router.routes())
+server.use(router.allowedMethods())
 server.listen(port, () => {
-    console.log('ready on', port)        
+  console.log('ready on', port)
 })

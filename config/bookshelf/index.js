@@ -10,3 +10,5 @@ globalThis.bookshelf.Model = Model
 require('../../http/models/user')
 require('../../http/models/question')
 require('../../http/models/question_comment')
+require('../../http/models/question_comment_like')
+require('../../http/models/question_like')

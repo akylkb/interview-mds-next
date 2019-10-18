@@ -3,11 +3,11 @@ const facebookStrategy = require('./facebook')
 const googleStrategy = require('./google')
 const yandexStrategy = require('./yandex')
 const vkontakteStrategy = require('./vkontakte')
+const jwtStrategy = require('./jwt')
 
-module.exports = function(server, passport) {
-
-  passport.serializeUser(function(user, done) {
-    //console.log('serizlize user', user)
+module.exports = function (server, passport) {
+  passport.serializeUser(function (user, done) {
+    console.log('serizlize user', user)
     // TODO: JWT auth, ошибки учесть
     // в токен данные: id, group, name
     if (user) {
@@ -15,21 +15,23 @@ module.exports = function(server, passport) {
     }
     return done(new Error('Нет данных'))
   })
-  
-  passport.deserializeUser(async function(id, done) {
-    console.log('deserialize user', id)
+
+  passport.deserializeUser(async (id, done) => {
+    console.log('deserializeUser', id)
     try {
       const user = await User.findById(id)
       done(null, user)
-    } catch(err) {
+    } catch (err) {
       done(err)
     }
   })
-  
+
   passport.use(facebookStrategy())
   passport.use(googleStrategy())
   passport.use(yandexStrategy())
   passport.use(vkontakteStrategy())
+  passport.use(jwtStrategy())
 
-  server.use(passport.initialize())  
+  server.use(passport.initialize())
+  server.use(passport.session({}))
 }

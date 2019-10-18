@@ -1,5 +1,5 @@
 
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema
     .createTable('questions', table => {
       table.increments('id').primary()
@@ -8,6 +8,7 @@ exports.up = function(knex) {
       table.string('title')
       table.text('description')
       table.text('answer')
+      table.enum('level', ['junior', 'middle', 'senior']).defaultTo('junior')
       table.timestamp('created_at').defaultTo(knex.fn.now())
       table.timestamp('updated_at').defaultTo(knex.fn.now())
     })
@@ -30,13 +31,12 @@ exports.up = function(knex) {
       table.integer('user_id').unsigned().references('users.id')
       table.integer('question_comment_id').unsigned().references('question_comments.id')
     })
+}
 
-};
-
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema
     .dropTable('questions')
     .dropTable('question_comments')
     .dropTable('question_comment_likes')
     .dropTable('question_likes')
-};
+}

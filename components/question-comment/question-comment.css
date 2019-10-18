@@ -1,0 +1,14 @@
+.QuestionComment {
+    margin-bottom: 2em;
+    border-radius: 4px;
+}
+.QuestionComment.marked {
+    background: #fff4df;
+}
+.QuestionComment .marked-icon {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    color: green;
+    font-size: 18px;
+}

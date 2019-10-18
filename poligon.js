@@ -1,5 +1,7 @@
-require('./http/bookshelf')
-const User = require('./http/models/user')
+const jwt = require('jsonwebtoken')
 
+const results = jwt.sign({
+  data: 'foo'
+}, 'secret', { expiresIn: '1d' })
 
-User.findAll().then(user => console.log(user.toJSON()))
+console.log(results)

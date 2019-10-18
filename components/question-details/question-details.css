@@ -1,0 +1,9 @@
+.QuestionDetails .description {
+    margin-bottom: 15px;
+}
+.QuestionDetails .buttons {
+    justify-content: flex-end;
+}
+.QuestionDetails .buttons .button {
+    margin-bottom: 0;
+}
