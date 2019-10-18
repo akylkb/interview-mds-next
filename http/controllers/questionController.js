@@ -1,5 +1,5 @@
-const Question = globalThis.bookshelf.model('Question')
-const QuestionComment = globalThis.bookshelf.model('QuestionComment')
+const Question = global.bookshelf.model('Question')
+const QuestionComment = global.bookshelf.model('QuestionComment')
 
 class QuestionController {
   static async findAll (ctx) {

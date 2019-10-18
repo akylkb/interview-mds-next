@@ -1,6 +1,6 @@
 // const { removeKeysFromObject } = require('../utils/helpers')
 
-class Question extends globalThis.bookshelf.Model {
+class Question extends global.bookshelf.Model {
   get tableName () {
     return 'questions'
   }
@@ -18,8 +18,8 @@ class Question extends globalThis.bookshelf.Model {
   }
 
   static async findAll (filter = {}, options = {}) {
-    const QuestionComment = globalThis.bookshelf.model('QuestionComment')
-    const QuestionLike = globalThis.bookshelf.model('QuestionLike')
+    const QuestionComment = global.bookshelf.model('QuestionComment')
+    const QuestionLike = global.bookshelf.model('QuestionLike')
 
     const { models, pagination } = await this.forge().orderBy('created_at', 'DESC').where(filter).fetchPage({
       columns: ['id', 'user_id', 'title', 'level', 'created_at'],
@@ -49,8 +49,8 @@ class Question extends globalThis.bookshelf.Model {
   }
 
   static async findById (id) {
-    const QuestionComment = globalThis.bookshelf.model('QuestionComment')
-    const QuestionLike = globalThis.bookshelf.model('QuestionLike')
+    const QuestionComment = global.bookshelf.model('QuestionComment')
+    const QuestionLike = global.bookshelf.model('QuestionLike')
 
     const model = await super.findById(id, { withRelated: ['user'] })
 
@@ -67,4 +67,4 @@ class Question extends globalThis.bookshelf.Model {
   }
 }
 
-module.exports = globalThis.bookshelf.model('Question', Question)
+module.exports = global.bookshelf.model('Question', Question)

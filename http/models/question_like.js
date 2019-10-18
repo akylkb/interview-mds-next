@@ -1,4 +1,4 @@
-class QuestionLike extends globalThis.bookshelf.Model {
+class QuestionLike extends global.bookshelf.Model {
   get tableName () {
     return 'question_likes'
   }
@@ -24,4 +24,4 @@ class QuestionLike extends globalThis.bookshelf.Model {
   }
 }
 
-module.exports = globalThis.bookshelf.model('QuestionLike', QuestionLike)
+module.exports = global.bookshelf.model('QuestionLike', QuestionLike)

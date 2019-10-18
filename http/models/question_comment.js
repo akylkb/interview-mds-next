@@ -1,4 +1,4 @@
-class QuestionComment extends globalThis.bookshelf.Model {
+class QuestionComment extends global.bookshelf.Model {
   get tableName () {
     return 'question_comments'
   }
@@ -12,7 +12,7 @@ class QuestionComment extends globalThis.bookshelf.Model {
   }
 
   static async findAll (filter = {}, options = {}) {
-    const QuestionCommentLike = globalThis.bookshelf.model('QuestionCommentLike')
+    const QuestionCommentLike = global.bookshelf.model('QuestionCommentLike')
 
     const models = await this.forge().where(filter).orderBy('created_at', 'DESC').fetchAll({
       withRelated: ['user']
@@ -35,4 +35,4 @@ class QuestionComment extends globalThis.bookshelf.Model {
   }
 }
 
-module.exports = globalThis.bookshelf.model('QuestionComment', QuestionComment)
+module.exports = global.bookshelf.model('QuestionComment', QuestionComment)

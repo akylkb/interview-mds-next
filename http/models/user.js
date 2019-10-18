@@ -1,6 +1,6 @@
 const assert = require('assert')
 
-class User extends globalThis.bookshelf.Model {
+class User extends global.bookshelf.Model {
   get tableName () {
     return 'users'
   }
@@ -57,4 +57,4 @@ class User extends globalThis.bookshelf.Model {
   }
 }
 
-module.exports = globalThis.bookshelf.model('User', User)
+module.exports = global.bookshelf.model('User', User)

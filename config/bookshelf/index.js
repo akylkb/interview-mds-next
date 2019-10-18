@@ -3,8 +3,8 @@ const knex = require('knex')(options)
 const bookshelf = require('bookshelf')(knex)
 const Model = require('./model')(bookshelf)
 
-globalThis.bookshelf = bookshelf
-globalThis.bookshelf.Model = Model
+global.bookshelf = bookshelf
+global.bookshelf.Model = Model
 
 // Register models
 require('../../http/models/user')

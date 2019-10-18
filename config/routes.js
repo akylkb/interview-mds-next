@@ -75,14 +75,14 @@ module.exports = (server, router, passport) => {
   router.get('/api/questions/:questionId/comments', QuestionController.findComments)
 
   router.get('/api/like/question/:id', loginRequired, async ctx => {
-    const QuestionLike = globalThis.bookshelf.model('QuestionLike')
+    const QuestionLike = global.bookshelf.model('QuestionLike')
     const { id } = ctx.params
     const { user } = ctx.state
     ctx.status = await QuestionLike.createOrDelete(user.id, id)
   })
 
   router.get('/api/like/comment/:id', loginRequired, async ctx => {
-    const QuestionCommentLike = globalThis.bookshelf.model('QuestionCommentLike')
+    const QuestionCommentLike = global.bookshelf.model('QuestionCommentLike')
     const { id } = ctx.params
     const { user } = ctx.state
     ctx.status = await QuestionCommentLike.createOrDelete(user.id, id)

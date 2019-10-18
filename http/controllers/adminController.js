@@ -1,4 +1,4 @@
-const Question = globalThis.bookshelf.model('Question')
+const Question = global.bookshelf.model('Question')
 
 class AdminController {
   static async getQuestions (ctx) {

@@ -1,6 +1,6 @@
 class CommentController {
   static async createForQuestion (ctx) {
-    const QuestionComment = globalThis.bookshelf.model('QuestionComment')
+    const QuestionComment = global.bookshelf.model('QuestionComment')
     const { id } = ctx.params
     const { user } = ctx.state
     const { body } = ctx.request

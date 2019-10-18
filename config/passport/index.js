@@ -1,4 +1,4 @@
-const User = globalThis.bookshelf.model('User')
+const User = global.bookshelf.model('User')
 const facebookStrategy = require('./facebook')
 const googleStrategy = require('./google')
 const yandexStrategy = require('./yandex')
