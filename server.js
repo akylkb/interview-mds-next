@@ -1,5 +1,4 @@
 require('dotenv').config()
-require('dotenv').config()
 require('./config/bookshelf')
 
 const Koa = require('koa')
