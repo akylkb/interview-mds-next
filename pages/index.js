@@ -25,6 +25,19 @@ const Index = ({ data }) => {
         .suggest p {
           padding-left: 1em;
         }
+
+        @media screen and (max-width: 600px) {
+          .suggest {
+            display: block;
+          }
+          .suggest p {
+            padding-top: 1em;
+            padding-left: 0;
+          }
+          .suggest .button {
+            width: 100%;
+          }
+        }
         `}
         </style>
       </PageHeader>

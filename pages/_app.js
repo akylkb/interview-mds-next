@@ -26,6 +26,8 @@ export default class MyApp extends App {
           <link rel="stylesheet" type="text/css" href="/static/bulma.css" />
           <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
           <link rel="stylesheet" type="text/css" href="/static/font-awesome.css" />
+          <link id="favicon" rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+          <title>Interview MDS</title>
         </Head>
         <UserProvider>
           <Component {...pageProps} />
