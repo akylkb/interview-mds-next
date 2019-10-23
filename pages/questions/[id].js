@@ -72,6 +72,37 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
     }
   }
 
+  const onDeleteComment = comment => {
+    axios.delete(`/api/admin/comments/${comment.id}`)
+      .then(() => {
+        const updated = comments.filter(item => item.id !== comment.id)
+        setComments(updated)
+      })
+      .catch(err => {
+        window.alert('Не удалось выполнить запрос')
+        console.error(err)
+      })
+  }
+
+  const onMarkComment = comment => {
+    axios.put(`/api/admin/comments/${comment.id}`, { marked: !comment.marked })
+      .then(() => {
+        const updated = comments.map(item => {
+          if (item.id !== comment.id) return item
+          const isMarked = !item.marked
+          return {
+            ...item,
+            marked: isMarked
+          }
+        })
+        setComments(updated)
+      })
+      .catch(err => {
+        window.alert('Не удалось выполнить запрос')
+        console.error(err)
+      })
+  }
+
   return (
     <>
       <Head>
@@ -111,7 +142,13 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
           />
 
           {loadingComments && <Spinner caption="Загрузка комментариев" />}
-          {!loadingComments && <ListComments comments={comments} />}
+          {!loadingComments && (
+            <ListComments
+              comments={comments}
+              onDelete={onDeleteComment}
+              onMark={onMarkComment}
+            />
+          )}
 
         </Box>
       </Layout>

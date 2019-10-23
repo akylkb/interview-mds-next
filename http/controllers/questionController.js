@@ -3,8 +3,12 @@ const QuestionComment = global.bookshelf.model('QuestionComment')
 
 class QuestionController {
   static async findAll (ctx) {
-    const { page } = ctx.request.query
-    const results = await Question.findAll({ active: true }, {
+    const { page, user } = ctx.request.query
+    const filters = {}
+    if (user) {
+      filters.user_id = parseInt(user) || 0
+    }
+    const results = await Question.findAll({ active: true, ...filters }, {
       pageSize: 20,
       page
     })

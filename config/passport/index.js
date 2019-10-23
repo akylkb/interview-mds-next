@@ -7,9 +7,7 @@ const jwtStrategy = require('./jwt')
 
 module.exports = function (server, passport) {
   passport.serializeUser(function (user, done) {
-    console.log('serizlize user', user)
-    // TODO: JWT auth, ошибки учесть
-    // в токен данные: id, group, name
+    // console.log('serizlize user', user)
     if (user) {
       return done(null, user.id)
     }
@@ -17,7 +15,7 @@ module.exports = function (server, passport) {
   })
 
   passport.deserializeUser(async (id, done) => {
-    console.log('deserializeUser', id)
+    // console.log('deserializeUser', id)
     try {
       const user = await User.findById(id)
       done(null, user)

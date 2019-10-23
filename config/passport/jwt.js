@@ -17,7 +17,6 @@ module.exports = () => {
     secretOrKey: process.env.JWT_SECRET,
     jwtFromRequest
   }, async (jwtPayload, done) => {
-    console.log(jwtPayload)
     try {
       const user = await User.findById(jwtPayload.id)
       if (user) {

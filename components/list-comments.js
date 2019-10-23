@@ -1,6 +1,6 @@
 import ListItemComment from './list-item-comment'
 
-const ListComments = ({ comments }) => {
+const ListComments = ({ comments, onDelete, onMark }) => {
   return (
     <>
       <h4 className="title is-4" id="comments">Комментарии</h4>
@@ -11,6 +11,8 @@ const ListComments = ({ comments }) => {
         <ListItemComment
           key={comment.id}
           item={comment}
+          onDelete={onDelete}
+          onMark={onMark}
         />
       )}
     </>

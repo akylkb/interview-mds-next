@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Icon = ({ name, ...props }) => {
   return (
-    <i aria-hidden="true" {...props}>
+    <i className="Icon" aria-hidden="true" {...props}>
       <FontAwesomeIcon icon={name} />
     </i>
   )

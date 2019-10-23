@@ -1,4 +1,6 @@
-const User = require('../models/user')
+const User = global.bookshelf.model('User')
+const QuestionComment = global.bookshelf.model('QuestionComment')
+const Question = global.bookshelf.model('Question')
 const { asyncGenerateHash, asyncCheckHash } = require('../utils/helpers')
 const token = require('../utils/token')
 
@@ -58,10 +60,28 @@ class UserController {
     ctx.body = users
   }
 
-  static async findOne (ctx) {
+  static async findById (ctx) {
     const { id } = ctx.params
-    const user = await User.findOne(id)
-    ctx.body = user
+    try {
+      const user = await User.forge().where({ id }).fetch()
+      ctx.success = user.toJSON()
+    } catch (err) {
+      ctx.status = 400
+      ctx.failure = err.message
+    }
+  }
+
+  static async findComments (ctx) {
+    const { userId } = ctx.params
+    try {
+      const result = await QuestionComment.forge().where({ user_id: userId }).fetchAll({ withRelated: 'question' })
+      console.log(result)
+      ctx.success = result.toJSON()
+    } catch (err) {
+      ctx.status = 400
+      ctx.failure = err.message
+      console.error(err)
+    }
   }
 
   static async update (ctx) {
@@ -83,6 +103,27 @@ class UserController {
 
   static async delete (ctx) {
     ctx.body = 'delete'
+  }
+
+  static async getInfo (ctx) {
+    const { userId } = ctx.params
+    try {
+      const [questions, answers, correct] = await Promise.all([
+        Question.forge().where({ user_id: userId }).count(),
+        QuestionComment.forge().where({ user_id: userId }).count(),
+        QuestionComment.forge().where({ user_id: userId, marked: true }).count()
+      ])
+      ctx.success = {
+        counts: {
+          questions,
+          answers,
+          correct
+        }
+      }
+    } catch (err) {
+      ctx.failure = err.message
+      console.error(err)
+    }
   }
 }
 

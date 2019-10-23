@@ -3,7 +3,7 @@ import { faUser, faStar } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import Icon from './icon'
 
-const Avatar = ({ id, image = null, stars = null, name = null }) => {
+const Avatar = ({ id, image = null, stars = null, name = null, size = 35 }) => {
   return (
     <>
       <Link href={`/users/${id}`}>
@@ -35,13 +35,14 @@ const Avatar = ({ id, image = null, stars = null, name = null }) => {
         </a>
       </Link>
 
-      <style jsx>{`
+      <style global jsx>{`
         .Avatar {
           display: inline-flex;
           align-items: center;
+          font-size: ${size}px;
         }
         .Avatar-wrap-left {
-          width: 35px;
+          width: 1em;
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
@@ -51,20 +52,31 @@ const Avatar = ({ id, image = null, stars = null, name = null }) => {
           display: none;
         }
         .Avatar-image {
-          width: 35px;
-          height: 35px;
+          width: 1em;
+          height: 1em;
           display: inline-flex;
           justify-content: center;
           align-items: center;
           background: gainsboro;
           border-radius: 50%;
           color: white;
+          overflow: hidden;
+        }
+        .Avatar-image > .Icon {
+          font-size: 0.4em;
+        }
+        .Avatar-image > img {
+          width: 1em;
+          height: 1em;
+          object-fit: cover;
         }
         .Avatar-name {
           padding-left: 10px;
+          font-size: 0.45em;
         }
+
         .Avatar-stars {
-          font-size: 10px;
+          font-size: 0.15em;
           color: orange;
           width: 100%;
           text-align: center;

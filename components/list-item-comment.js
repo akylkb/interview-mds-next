@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import axios from 'axios'
-import { faHeart, faReply } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faReply, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
 import Icon from './icon'
 import Avatar from './avatar'
 import { formatDate } from '../utils/helpers'
+import { UserContext } from './user-context'
 
-const ListItemComment = ({ item }) => {
+const ListItemComment = ({ item, onDelete, onMark }) => {
   const {
     user,
     content
   } = item
+  const [authorizedUser] = useContext(UserContext)
   const [likes, setLikes] = useState(item.likes_count)
 
   const handleClickReply = event => {
@@ -39,8 +41,18 @@ const ListItemComment = ({ item }) => {
       .catch(console.error)
   }
 
+  const handleClickMark = event => {
+    if (onMark) onMark(item)
+  }
+
+  const handleClickDelete = event => {
+    const isConfirm = window.confirm('Удалить?')
+    if (!isConfirm) return false
+    if (onDelete) onDelete(item)
+  }
+
   return (
-    <article className="media">
+    <article className={`media ${item.marked ? 'is-mark' : ''}`}>
       <div className="media-left">
         <Avatar id={user.id} image={user.avatar} />
       </div>
@@ -69,9 +81,46 @@ const ListItemComment = ({ item }) => {
               <Icon name={faHeart} />&nbsp;{likes}
             </a>
           </div>
+          {authorizedUser && authorizedUser.group === 'admin' && (
+            <div className="level-right">
+              <a
+                onClick={handleClickMark}
+                className="level-item"
+                aria-label="like"
+              >
+                <Icon name={faCheck} />&nbsp;Отметить
+              </a>
+              <a
+                onClick={handleClickDelete}
+                className="level-item has-text-danger"
+                aria-label="like"
+              >
+                <Icon name={faTrash} />&nbsp;Удалить
+              </a>
+            </div>
+          )}
         </nav>
-
       </div>
+      <style global jsx>{`
+        .media {
+          position: relative;
+          align-items: flex-start;
+          display: flex;
+          text-align: left;
+          z-index: 0;
+        }
+        .media.is-mark::before {
+          content: '';
+          background: #fff3dd;
+          position: absolute;
+          left: -20px;
+          right: -20px;
+          top: 0;
+          bottom: -17px;
+          z-index: -1;
+        }
+      `}
+      </style>
     </article>
   )
 }

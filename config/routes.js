@@ -11,6 +11,9 @@ module.exports = (server, router, passport) => {
   router.post('/signup', validator(schemas.signup), UserController.signup)
   router.post('/signin', validator(schemas.signin), UserController.signin)
   router.get('/logout', UserController.logout)
+  router.get('/api/users/:id', UserController.findById)
+  router.get('/api/users/:userId/comments', UserController.findComments)
+  router.get('/api/users/:userId/info', UserController.getInfo)
 
   const authCallback = (strategyName) => {
     return (ctx, next) => passport.authenticate(strategyName, (err, user) => {
@@ -53,6 +56,8 @@ module.exports = (server, router, passport) => {
   router.get('/api/admin/questions', adminRequired, AdminController.getQuestions)
   router.put('/api/admin/questions/:id', adminRequired, AdminController.updateQuestion)
   router.delete('/api/admin/questions/:id', adminRequired, AdminController.deleteQuestion)
+  router.put('/api/admin/comments/:id', adminRequired, AdminController.updateComment)
+  router.delete('/api/admin/comments/:id', adminRequired, AdminController.deleteComment)
   router.all('/admin*', adminRequired)
 
   // next

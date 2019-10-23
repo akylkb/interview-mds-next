@@ -24,6 +24,7 @@ const Index = ({ data }) => {
         }
         .suggest p {
           padding-left: 1em;
+          font-size: 18px;
         }
 
         @media screen and (max-width: 600px) {

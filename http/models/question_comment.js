@@ -7,6 +7,10 @@ class QuestionComment extends global.bookshelf.Model {
     return ['updated_at']
   }
 
+  question () {
+    return this.belongsTo('Question')
+  }
+
   user () {
     return this.belongsTo('User')
   }

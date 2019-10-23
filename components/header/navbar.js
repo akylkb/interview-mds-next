@@ -66,19 +66,29 @@ const Navbar = () => {
               </Link>
             </div>
           )}
+
           {user && (
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">{user.name || 'Профиль'}</a>
               <div className="navbar-dropdown profile-dropdown">
-                {/* <Link href="/users/[id]" as={`/users/${user.id}`}>
+                <Link href="/users/[id]" as={`/users/${user.id}`}>
                   <a className="navbar-item">Мой профиль</a>
-                </Link> */}
-                {/* <Link href="/my/questions">
+                </Link>
+                <Link
+                  href="/users/[id]?tab=questions"
+                  as={`/users/${user.id}?tab=questions`}
+                >
                   <a className="navbar-item">Мои вопросы</a>
-                </Link> */}
-                {/* <Link href="/my/settings">
+                </Link>
+                <Link
+                  href="/users/[id]?tab=comments"
+                  as={`/users/${user.id}?tab=comments`}
+                >
+                  <a className="navbar-item">Мои комментарии</a>
+                </Link>
+                <Link href="/my/settings">
                   <a className="navbar-item">Настройки</a>
-                </Link> */}
+                </Link>
                 <hr className="navbar-divider" />
                 <a href="/logout" className="navbar-item">Выйти</a>
               </div>

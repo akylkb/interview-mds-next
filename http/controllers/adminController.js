@@ -1,4 +1,5 @@
 const Question = global.bookshelf.model('Question')
+const QuestionComment = global.bookshelf.model('QuestionComment')
 
 class AdminController {
   static async getQuestions (ctx) {
@@ -32,6 +33,32 @@ class AdminController {
     } catch (err) {
       ctx.status = 400
       ctx.failure = err.message
+      console.error(err)
+    }
+  }
+
+  static async updateComment (ctx) {
+    const { id } = ctx.params
+    const { body } = ctx.request
+    try {
+      const result = await QuestionComment.update(body, { id })
+      ctx.success = result.toJSON()
+    } catch (err) {
+      ctx.failure = err.message
+      console.error(err)
+    }
+  }
+
+  static async deleteComment (ctx) {
+    const { id } = ctx.params
+    try {
+      await QuestionComment.destroy({ id })
+      ctx.status = 202
+      ctx.success = 'Deleted'
+    } catch (err) {
+      ctx.status = 400
+      ctx.failure = err.message
+      console.error(err)
     }
   }
 }
