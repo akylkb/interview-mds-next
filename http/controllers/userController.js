@@ -85,14 +85,34 @@ class UserController {
   }
 
   static async update (ctx) {
-    const { id } = ctx.params
-    const data = ctx.request.body
-    const userUpdated = await User.update(id, data)
-    ctx.body = userUpdated
+    const { body } = ctx.request
+    const { id } = ctx.state.user
+    const userUpdated = await User.update(body, { id })
+    ctx.success = userUpdated.toJSON()
   }
 
   static async updatePassword (ctx) {
-    ctx.body = 'update password'
+    const { password, new_password: newPassword } = ctx.request.body
+    const { user } = ctx.state
+
+    if (!user.get('email')) {
+      ctx.failure = 'У вас нет email адреса'
+      return
+    }
+    const passwordHash = user.get('password_hash')
+
+    const valid = await asyncCheckHash(password, passwordHash)
+    if (!valid) {
+      ctx.failure = 'Введите ваш старый пароль правильно'
+      return
+    }
+    const newPasswordHash = await asyncGenerateHash(newPassword)
+    await User.update({
+      password_hash: newPasswordHash
+    }, {
+      id: user.id
+    })
+    ctx.success = 'Пароль обновлен'
   }
 
   static async create (ctx) {

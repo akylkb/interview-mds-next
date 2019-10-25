@@ -1,5 +1,5 @@
-const serializeForm = (element) => {
-  const formData = new FormData(element)
+const serializeForm = (formElement) => {
+  const formData = new FormData(formElement)
   const jsonObject = {}
 
   for (const [key, value] of formData.entries()) {

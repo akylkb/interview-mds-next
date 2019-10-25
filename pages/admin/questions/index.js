@@ -50,7 +50,7 @@ const TableItem = ({
       </td>
       <td>{level}</td>
       <td>
-        <Link href={`/admin/questions/${id}`}>
+        <Link href={`/questions/${id}`}>
           <a>{title}</a>
         </Link>
       </td>
@@ -106,16 +106,16 @@ const AdminQuestions = ({ data }) => {
             <Pagination total={pageCount} current={page} />
           </>
         )}
-        
       </section>
     </Layout>
   )
 }
 
-AdminQuestions.getInitialProps = async ({ query }) => {
+AdminQuestions.getInitialProps = async ({ query, req }) => {
   const APP_URL = process.env.APP_URL
   const response = await axios.get(`${APP_URL}/api/admin/questions`, {
-    params: query
+    params: query,
+    headers: req ? req.headers : null
   })
   const { data } = response.data
   return {

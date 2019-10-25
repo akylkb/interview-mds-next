@@ -3,8 +3,8 @@ const passport = require('koa-passport')
 exports.loginRequired = async (ctx, next) => {
   return passport.authenticate('jwt', async (err, user) => {
     if (err) {
-      ctx.failure = err.message
       console.error(err)
+      ctx.failure = err.message
       return
     }
     if (user) {
@@ -21,13 +21,16 @@ exports.adminRequired = async (ctx, next) => {
   return passport.authenticate('jwt', async (err, user) => {
     if (err) {
       ctx.status = 500
-      console.error(err)
+      ctx.failure = err.message
+      console.log(err)
       return
     }
     if (user && user.get('group') === 'admin') {
+      // ctx.login(user)
       await next()
       return
     }
     ctx.status = 403
+    ctx.body = 'Сюда вам нельзя'
   })(ctx)
 }

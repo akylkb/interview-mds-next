@@ -26,6 +26,7 @@ export default class MyApp extends App {
           }
         })
         user = response.data
+        appContext.ctx.req.user = user
       }
     } catch {
       user = null

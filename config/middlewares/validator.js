@@ -5,7 +5,9 @@ module.exports = (schema, property = 'body') => {
   assert(Joi.isSchema(schema))
   const customMessages = {
     'object.unknown': '"{{#label}}" не допускается',
-    'any.required': 'Поле "{{#label}}" обязательно'
+    'any.required': 'Поле "{{#label}}" обязательно',
+    // 'any.ref': '"{{#label}}" {{#arg}} s "{{#ref}}" which {{#reason}}',
+    'any.only': 'Поле "{{#label}}" должно полю {if(#valids.length == 1, "", "one of ")}{{#valids}}'
   }
 
   return async (ctx, next) => {

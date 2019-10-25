@@ -24,6 +24,18 @@ module.exports = {
 
   comment: Joi.object({
     content: Joi.string().required()
+  }),
+
+  updateUser: Joi.object({
+    name: Joi.string().empty(''),
+    description: Joi.string().empty(''),
+    email: Joi.string().email().empty('')
+  }),
+
+  updatePassword: Joi.object({
+    password: Joi.string().label('Пароль').required(),
+    new_password: Joi.string().min(6).label('Новый пароль').required(),
+    new_password_repeat: Joi.ref('new_password')
   })
 
 }

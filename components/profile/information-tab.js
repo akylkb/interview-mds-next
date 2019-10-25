@@ -3,6 +3,10 @@ const InformationTab = ({ data: response }) => {
 
   return (
     <div className="InformationTab">
+      <div className="user-progress">
+        <span className="text has-text-success">Вероятность получить работу мечты 1%</span>
+        <progress className="progress is-success" value="1" max="100">1%</progress>
+      </div>
       {data && data.counts && (
         <ul className="infographics">
           <li>
@@ -34,6 +38,13 @@ const InformationTab = ({ data: response }) => {
           font-size: 48px;
           line-height: 1.2;
           display: block;
+        }
+        .user-progress {
+          margin-bottom: 1.5rem;
+        }
+        .user-progress span {
+          display: block;
+          text-align: center;
         }
       `}
       </style>

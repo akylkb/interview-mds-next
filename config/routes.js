@@ -14,6 +14,18 @@ module.exports = (server, router, passport) => {
   router.get('/api/users/:id', UserController.findById)
   router.get('/api/users/:userId/comments', UserController.findComments)
   router.get('/api/users/:userId/info', UserController.getInfo)
+  router.patch('/api/users',
+    loginRequired,
+    validator(schemas.updateUser),
+    UserController.update
+  )
+  router.patch('/api/users/update-password',
+    loginRequired,
+    validator(schemas.updatePassword),
+    UserController.updatePassword
+  )
+  // nextjs
+  router.all('/my*', loginRequired)
 
   const authCallback = (strategyName) => {
     return (ctx, next) => passport.authenticate(strategyName, (err, user) => {
@@ -60,7 +72,6 @@ module.exports = (server, router, passport) => {
   router.delete('/api/admin/comments/:id', adminRequired, AdminController.deleteComment)
   router.all('/admin*', adminRequired)
 
-  // next
   router.get('/api/questions', QuestionController.findAll)
   router.get('/api/questions/:id', QuestionController.findById)
   router.post('/api/questions',
