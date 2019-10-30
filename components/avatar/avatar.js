@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { faUser, faStar } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import Icon from './icon'
+import Icon from '../icon'
 
 const renderStars = (rating) => {
   if (rating > 0 && rating < 33) {
@@ -33,7 +33,7 @@ const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize
           <div className="Avatar-wrap-left">
             <div className="Avatar-image">
               {!image && (
-                <Icon name={faUser} />
+                <img src="/static/user.svg" alt="" />
               )}
               {image && (
                 <img src={image} alt="" />
@@ -77,13 +77,10 @@ const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize
           display: inline-flex;
           justify-content: center;
           align-items: center;
-          background: gainsboro;
+          background: #f1f1f1;
           border-radius: 50%;
           color: white;
           overflow: hidden;
-        }
-        .Avatar-image > .Icon {
-          font-size: 0.4em;
         }
         .Avatar-image > img {
           width: 1em;
