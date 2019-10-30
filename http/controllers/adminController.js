@@ -37,6 +37,21 @@ class AdminController {
     }
   }
 
+  static async getQuestionById (ctx) {
+    try {
+      const { id } = ctx.params
+      const result = await Question.forge({ id }).fetch({
+        withRelated: ['user'],
+        columns: '*'
+      })
+      ctx.success = result.toJSON()
+    } catch (err) {
+      ctx.status = 400
+      ctx.failure = err.message
+      console.error(err)
+    }
+  }
+
   static async updateComment (ctx) {
     const { id } = ctx.params
     const { body } = ctx.request

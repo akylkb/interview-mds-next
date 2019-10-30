@@ -3,7 +3,29 @@ import { faUser, faStar } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import Icon from './icon'
 
-const Avatar = ({ id, image = null, stars = null, name = null, size = 35 }) => {
+const renderStars = (rating) => {
+  if (rating > 0 && rating < 33) {
+    return <Icon name={faStar} />
+  } else if (rating > 33 && rating < 66) {
+    return (
+      <>
+        <Icon name={faStar} />
+        <Icon name={faStar} />
+      </>
+    )
+  } else if (rating > 66) {
+    return (
+      <>
+        <Icon name={faStar} />
+        <Icon name={faStar} />
+        <Icon name={faStar} />
+      </>
+    )
+  }
+  return ''
+}
+
+const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize = 12 }) => {
   return (
     <>
       <Link href={`/users/${id}`}>
@@ -17,11 +39,9 @@ const Avatar = ({ id, image = null, stars = null, name = null, size = 35 }) => {
                 <img src={image} alt="" />
               )}
             </div>
-            {stars && (
+            {rating > 0 && (
               <div className="Avatar-stars">
-                <Icon name={faStar} />
-                <Icon name={faStar} />
-                <Icon name={faStar} />
+                {renderStars(rating)}
               </div>
             )}
           </div>
@@ -76,7 +96,7 @@ const Avatar = ({ id, image = null, stars = null, name = null, size = 35 }) => {
         }
 
         .Avatar-stars {
-          font-size: 0.15em;
+          font-size: ${starSize}px;
           color: orange;
           width: 100%;
           text-align: center;

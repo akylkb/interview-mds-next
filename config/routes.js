@@ -24,6 +24,11 @@ module.exports = (server, router, passport) => {
     validator(schemas.updatePassword),
     UserController.updatePassword
   )
+  router.post('/api/users/forgot-password',
+    validator(schemas.forgotPassword),
+    UserController.forgotPassword
+  )
+  router.get('/change-password', UserController.changePassword)
   // nextjs
   router.all('/my*', loginRequired)
 
@@ -66,8 +71,10 @@ module.exports = (server, router, passport) => {
   })
   // admin
   router.get('/api/admin/questions', adminRequired, AdminController.getQuestions)
+  router.get('/api/admin/questions/:id', adminRequired, AdminController.getQuestionById)
   router.put('/api/admin/questions/:id', adminRequired, AdminController.updateQuestion)
   router.delete('/api/admin/questions/:id', adminRequired, AdminController.deleteQuestion)
+
   router.put('/api/admin/comments/:id', adminRequired, AdminController.updateComment)
   router.delete('/api/admin/comments/:id', adminRequired, AdminController.deleteComment)
   router.all('/admin*', adminRequired)

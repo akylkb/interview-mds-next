@@ -5,6 +5,7 @@ import Icon from './icon'
 import Avatar from './avatar'
 import { formatDate } from '../utils/helpers'
 import { UserContext } from './user-context'
+import WithCode from './with-code'
 
 const ListItemComment = ({ item, onDelete, onMark }) => {
   const {
@@ -60,8 +61,7 @@ const ListItemComment = ({ item, onDelete, onMark }) => {
         <div className="content">
           <p>
             <strong>{user.name || 'Anonim'}</strong> <small>{formatDate(item.created_at)}</small>
-            <br />
-            {content}
+            <div style={{ whiteSpace: 'pre-wrap', marginTop: 10 }}><WithCode>{content}</WithCode></div>
           </p>
         </div>
         <nav className="level is-mobile">

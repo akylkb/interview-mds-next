@@ -36,6 +36,10 @@ module.exports = {
     password: Joi.string().label('Пароль').required(),
     new_password: Joi.string().min(6).label('Новый пароль').required(),
     new_password_repeat: Joi.ref('new_password')
+  }),
+
+  forgotPassword: Joi.object({
+    email: Joi.string().email().required()
   })
 
 }

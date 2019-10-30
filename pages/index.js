@@ -4,7 +4,7 @@ import Layout from '../components/layout'
 import PageHeader from '../components/page-header'
 import ListQuestions from '../components/list-questions'
 
-const Index = ({ data }) => {
+const Index = ({ data, query }) => {
   return (
     <Layout>
       <PageHeader title="Вопросы для интервью по специальности Data Science">
@@ -43,7 +43,7 @@ const Index = ({ data }) => {
         </style>
       </PageHeader>
       <section>
-        <ListQuestions {...data} />
+        <ListQuestions {...data} query={query} />
       </section>
     </Layout>
   )

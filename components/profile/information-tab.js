@@ -1,11 +1,11 @@
-const InformationTab = ({ data: response }) => {
+const InformationTab = ({ data: response, user }) => {
   const data = response.data
 
   return (
     <div className="InformationTab">
       <div className="user-progress">
-        <span className="text has-text-success">Вероятность получить работу мечты 1%</span>
-        <progress className="progress is-success" value="1" max="100">1%</progress>
+        <span className="text has-text-success">Вероятность получить работу мечты {user.rating}%</span>
+        <progress className="progress is-success" value="1" max={user.rating}>{user.rating}%</progress>
       </div>
       {data && data.counts && (
         <ul className="infographics">

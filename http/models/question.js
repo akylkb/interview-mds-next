@@ -6,7 +6,7 @@ class Question extends global.bookshelf.Model {
   }
 
   get hidden () {
-    return ['answer']
+    // return ['answer']
   }
 
   user () {

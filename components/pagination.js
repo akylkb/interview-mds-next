@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import Icon from './icon'
+// import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+// import Icon from './icon'
 
-const Item = ({ number = 0, isCurrent = false, onClick }) => {
+const Item = ({ number = 0, isCurrent = false }) => {
   if (number === 0) {
     return (
       <li>
@@ -15,6 +15,13 @@ const Item = ({ number = 0, isCurrent = false, onClick }) => {
       <Link href={`?page=${number}`}>
         <a className={`pagination-link ${isCurrent ? 'is-current' : ''}`}>{number}</a>
       </Link>
+      <style jsx global>{`
+      .pagination-link.is-current {
+        background-color: #9859ff;
+        border-color: #9859ff;
+      }
+      `}
+      </style>
     </li>
   )
 }
@@ -28,7 +35,7 @@ const Pagination = ({ current, total, onSelect }) => {
   return (
     <div className="Pagination">
       <nav className="pagination" role="navigation" aria-label="pagination">
-        <a
+        {/* <a
           className="pagination-previous"
           onClick={() => {
             if (current !== 1) {
@@ -47,18 +54,13 @@ const Pagination = ({ current, total, onSelect }) => {
           }}
         >
           <Icon name={faArrowRight} />
-        </a>
+        </a> */}
         <ul className="pagination-list">
           {pages.map(page => (
             <Item
               key={page}
               number={page}
               isCurrent={page === current}
-              onClick={() => {
-                if (page !== current) {
-                  onSelect(page)
-                }
-              }}
             />
           ))}
         </ul>

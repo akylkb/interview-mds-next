@@ -6,7 +6,7 @@ class User extends global.bookshelf.Model {
   }
 
   get hidden () {
-    return ['password_hash', 'created_at', 'updated_at']
+    return ['password_hash', 'token', 'created_at', 'updated_at']
   }
 
   questions () {
@@ -20,7 +20,33 @@ class User extends global.bookshelf.Model {
         { questions: query => query.where('active', 1) }
       ]
     }
-    return await super.findAll(filter, options)
+    const result = await super.findAll(filter, options)
+    return result
+  }
+
+  static async getCounts (userId) {
+    try {
+      const QuestionComment = global.bookshelf.model('QuestionComment')
+      const Question = global.bookshelf.model('Question')
+
+      const [questions, answers, correct] = await Promise.all([
+        Question.forge().where({ user_id: userId }).count(),
+        QuestionComment.forge().where({ user_id: userId }).count(),
+        QuestionComment.forge().where({ user_id: userId, marked: true }).count()
+      ])
+      return {
+        questions,
+        answers,
+        correct
+      }
+    } catch (err) {
+      console.error(err)
+      return {
+        questions: 0,
+        answers: 0,
+        correct: 0
+      }
+    }
   }
 
   static async createOrFail (data) {
@@ -33,8 +59,8 @@ class User extends global.bookshelf.Model {
         .catch(() => resolve())
     })
     await promise
-
-    return await this.create(data)
+    const result = await this.create(data)
+    return result
   }
 
   static async findOrCreate (filter, data) {
@@ -53,7 +79,7 @@ class User extends global.bookshelf.Model {
     }
 
     const newUser = await this.create(data)
-    return await newUser
+    return newUser
   }
 }
 

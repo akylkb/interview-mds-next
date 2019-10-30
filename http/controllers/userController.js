@@ -1,8 +1,10 @@
+const md5 = require('md5')
+const Mailer = require('../utils/mailer')
 const User = global.bookshelf.model('User')
 const QuestionComment = global.bookshelf.model('QuestionComment')
-const Question = global.bookshelf.model('Question')
+// const Question = global.bookshelf.model('Question')
 const { asyncGenerateHash, asyncCheckHash } = require('../utils/helpers')
-const token = require('../utils/token')
+const tokenUtil = require('../utils/token')
 
 class UserController {
   static async signup (ctx) {
@@ -12,7 +14,7 @@ class UserController {
       let user = await User.createOrFail({ ...data, password_hash, provider: 'local' })
       user = user.toJSON()
       if (typeof ctx.login === 'function') {
-        const encodedToken = token.encode({ id: user.id })
+        const encodedToken = tokenUtil.encode({ id: user.id })
         ctx.cookies.set('token', encodedToken)
         ctx.login(user)
       }
@@ -38,7 +40,7 @@ class UserController {
 
       user = user.toJSON()
       if (typeof ctx.login === 'function') {
-        const encodedToken = token.encode({ id: user.id })
+        const encodedToken = tokenUtil.encode({ id: user.id })
         ctx.cookies.set('token', encodedToken)
         ctx.login(user)
       }
@@ -64,7 +66,8 @@ class UserController {
     const { id } = ctx.params
     try {
       const user = await User.forge().where({ id }).fetch()
-      ctx.success = user.toJSON()
+      const json = user.toJSON()
+      ctx.success = json
     } catch (err) {
       ctx.status = 400
       ctx.failure = err.message
@@ -115,6 +118,40 @@ class UserController {
     ctx.success = 'Пароль обновлен'
   }
 
+  static async forgotPassword (ctx) {
+    try {
+      const { email } = ctx.request.body
+      const user = await User.findOne({ email })
+      const token = md5(Date.now())
+      await user.save({
+        token
+      })
+      Mailer.sendResetPassword(email, token)
+      ctx.success = 'Письмо с инструкцией отправлена на почту'
+    } catch (err) {
+      ctx.status = 404
+      ctx.failure = 'Пользователь не найден'
+      console.error(err)
+    }
+  }
+
+  static async changePassword (ctx) {
+    try {
+      const { token } = ctx.query
+      if (!token.length > 10) {
+        throw new Error('Not token')
+      }
+      const user = await User.findOne({ token })
+      const encodedToken = tokenUtil.encode({ id: user.id })
+      ctx.cookies.set('token', encodedToken)
+      ctx.login(user)
+      ctx.redirect('/my/settings')
+    } catch (err) {
+      ctx.redirect('/')
+      console.error(err)
+    }
+  }
+
   static async create (ctx) {
     const data = ctx.request.body
     const user = await User.create(data)
@@ -128,17 +165,9 @@ class UserController {
   static async getInfo (ctx) {
     const { userId } = ctx.params
     try {
-      const [questions, answers, correct] = await Promise.all([
-        Question.forge().where({ user_id: userId }).count(),
-        QuestionComment.forge().where({ user_id: userId }).count(),
-        QuestionComment.forge().where({ user_id: userId, marked: true }).count()
-      ])
+      const counts = await User.getCounts(userId)
       ctx.success = {
-        counts: {
-          questions,
-          answers,
-          correct
-        }
+        counts
       }
     } catch (err) {
       ctx.failure = err.message

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons'
+import Icon from '../../../components/icon'
 import Layout from '../../../components/layout'
 import PageHeader from '../../../components/page-header'
 import Pagination from '../../../components/pagination'
@@ -28,6 +30,10 @@ const TableItem = ({
   }
 
   const handleClickDelete = () => {
+    const isConfirm = window.confirm('Удалить?')
+    if (!isConfirm) {
+      return false
+    }
     setLoading(true)
     axios.delete(`/api/admin/questions/${id}`)
       .then(() => onDelete())
@@ -59,7 +65,14 @@ const TableItem = ({
           <a>{user.name || 'Noname'}</a>
         </Link>
       </td>
-      <td><a onClick={handleClickDelete} className="tag is-danger">Удалить</a></td>
+      <td>
+        <Link href={`/admin/questions/${id}`}>
+          <a className="tag"><Icon name={faPen} /></a>
+        </Link>
+        <a onClick={handleClickDelete} className="tag is-danger">
+          <Icon name={faTrash} />
+        </a>
+      </td>
     </tr>
   )
 }

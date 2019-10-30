@@ -3,11 +3,13 @@ import { useState } from 'react'
 import axios from 'axios'
 import { serializeForm } from '../utils/helpers'
 import Notify from './notify'
+import WithCode from './with-code'
 
 const CommentForm = ({ url, onSuccess = f => f }) => {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [isPreview, hasPreview] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -58,11 +60,16 @@ const CommentForm = ({ url, onSuccess = f => f }) => {
 
         <div className="buttons">
           <button className={`button is-primary ${loading ? ' is-loading' : ''}`}>Опубликовать</button>
-          {/* <button className="button">Предпросмотр</button> */}
+          <a className="button" onClick={(e) => hasPreview(!isPreview)}>Предпросмотр</a>
         </div>
       </form>
 
-      {/* <div className="preview"></div> */}
+      {isPreview && (
+        <>
+          <hr />
+          <div className="preview"><WithCode>{text}</WithCode></div>
+        </>
+      )}
     </div>
   )
 }

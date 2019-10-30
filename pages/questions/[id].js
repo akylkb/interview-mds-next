@@ -1,17 +1,19 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import axios from 'axios'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
-import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faComment, faHeart, faPen } from '@fortawesome/free-solid-svg-icons'
 import Layout from '../../components/layout'
 import PageHeader from '../../components/page-header'
 import Box from '../../components/box'
 import Avatar from '../../components/avatar'
 import Icon from '../../components/icon'
 import ListComments from '../../components/list-comments'
-import CommentForm from '../../components/comment-form'
+import Editor from '../../components/editor'
 import Spinner from '../../components/spinner'
 import NotFound from '../../components/not-found'
+import { UserContext } from '../../components/user-context'
+import Link from 'next/link'
 
 const QuestionDetails = ({ question, comments: initialComments = [] }) => {
   if (!question.id) {
@@ -29,7 +31,7 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
     user,
     comments_count: commentsCount
   } = question
-
+  const [currentUser] = useContext(UserContext)
   const [likes, setLikes] = useState(question.likes_count)
   const [fetchingLike, setFetchingLike] = useState(false)
   const [comments, setComments] = useState(initialComments)
@@ -117,7 +119,16 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Avatar id={user.id} name={user.name} />
+
             <div className="buttons">
+              {currentUser && currentUser.group === 'admin' && (
+                <Link href={`/admin/questions/${id}`}>
+                  <a className="button is-success">
+                    <Icon name={faPen} />
+                  </a>
+                </Link>
+              )}
+
               <button
                 className="button is-primary"
                 onClick={handleClickComments}
@@ -136,10 +147,13 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
           </div>
         </PageHeader>
         <Box>
-          <CommentForm
-            url={`/api/comment/question/${id}`}
-            onSuccess={updateComments}
-          />
+          <div style={{ marginBottom: 30 }}>
+            <h4 className="title is-4">Ваш ответ на вопрос</h4>
+            <Editor
+              submitURL={`/api/comment/question/${id}`}
+              onSuccess={updateComments}
+            />
+          </div>
 
           {loadingComments && <Spinner caption="Загрузка комментариев" />}
           {!loadingComments && (

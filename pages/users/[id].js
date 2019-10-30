@@ -49,6 +49,8 @@ const User = ({ query, user, tabData }) => {
             id={user.id}
             image={user.avatar}
             size={100}
+            starSize={18}
+            rating={user.rating}
           />
           <h2 className="title is-2">{user.name}</h2>
           {user.description && <p>{user.description}</p>}
@@ -68,7 +70,7 @@ const User = ({ query, user, tabData }) => {
           )}
         </ul>
       </div>
-      {renderTab(tabs, currentTab, { data: tabData })}
+      {renderTab(tabs, currentTab, { data: tabData, user })}
     </Layout>
   )
 }

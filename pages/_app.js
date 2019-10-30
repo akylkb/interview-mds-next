@@ -44,6 +44,7 @@ export default class MyApp extends App {
           <link rel="stylesheet" type="text/css" href="/static/bulma.css" />
           <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
           <link rel="stylesheet" type="text/css" href="/static/font-awesome.css" />
+          <link rel="stylesheet" type="text/css" href="/static/katex.min.css" />
           <link id="favicon" rel="icon" type="image/x-icon" href="/static/favicon.ico" />
           <title>Interview MDS</title>
           <script src="/static/yandex.js" />
