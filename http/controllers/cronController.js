@@ -18,6 +18,6 @@ module.exports = class CronController {
         rating
       })
     })
-    ctx.body = users
+    ctx.body = 'ok'
   }
 }
