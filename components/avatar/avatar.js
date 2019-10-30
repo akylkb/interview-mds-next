@@ -33,7 +33,7 @@ const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize
           <div className="Avatar-wrap-left">
             <div className="Avatar-image">
               {!image && (
-                <img src="/static/user.svg" alt="" />
+                <img src="/static/user.png" alt="" />
               )}
               {image && (
                 <img src={image} alt="" />
