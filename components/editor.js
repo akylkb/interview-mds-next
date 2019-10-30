@@ -58,7 +58,7 @@ const Editor = ({ submitURL, onSuccess }) => {
         <div className="field">
           <div class="buttons">
             <a
-              onClick={() => onClickBBCode(String.raw`[latex] \int_0^\infty x^2 dx [/latex]`)}
+              onClick={() => onClickBBCode(String.raw`[latex] x^2 [/latex]`)}
               class="button is-small"
             >LaTeX</a>
             <a

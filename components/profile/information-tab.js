@@ -5,7 +5,7 @@ const InformationTab = ({ data: response, user }) => {
     <div className="InformationTab">
       <div className="user-progress">
         <span className="text has-text-success">Вероятность получить работу мечты {user.rating}%</span>
-        <progress className="progress is-success" value="1" max={user.rating}>{user.rating}%</progress>
+        <progress className="progress is-success" value="1" max={100}>{user.rating}%</progress>
       </div>
       {data && data.counts && (
         <ul className="infographics">

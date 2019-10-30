@@ -2,6 +2,7 @@ const UserController = require('../http/controllers/userController')
 const QuestionController = require('../http/controllers/questionController')
 const CommentController = require('../http/controllers/commentController')
 const AdminController = require('../http/controllers/adminController')
+const Croncontroller = require('../http/controllers/cronController')
 const validator = require('./middlewares/validator')
 const { loginRequired, adminRequired } = require('./middlewares/auth')
 const schemas = require('./schemas')
@@ -116,4 +117,6 @@ module.exports = (server, router, passport) => {
     validator(schemas.comment),
     CommentController.createForQuestion
   )
+
+  router.get('/cron/update-rating', Croncontroller.updateRating)
 }
