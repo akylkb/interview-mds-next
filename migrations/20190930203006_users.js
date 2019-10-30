@@ -13,7 +13,7 @@ exports.up = function (knex) {
     table.string('google_id')
     table.string('vk_id')
     table.string('yandex_id')
-    table.increments('rating', 3).defaultTo(0)
+    table.integer('rating', 3).defaultTo(0)
     table.enum('subscribed', ['on', 'off']).defaultTo('off')
     table.enum('group', ['admin', 'user']).defaultTo('user')
     table.timestamp('created_at').defaultTo(knex.fn.now())
