@@ -71,9 +71,9 @@ const Settings = () => {
         setUpdatedAvatar(avatarUrl)
       })
       .catch(err => {
-        setLoading(false)
         console.error(err)
       })
+      .finally(() => setLoading(false))
   }
 
   return (
