@@ -14,6 +14,7 @@ import Spinner from '../../components/spinner'
 import NotFound from '../../components/not-found'
 import { UserContext } from '../../components/user-context'
 import Link from 'next/link'
+import WithCode from '../../components/with-code'
 
 const QuestionDetails = ({ question, comments: initialComments = [] }) => {
   if (!question.id) {
@@ -114,7 +115,7 @@ const QuestionDetails = ({ question, comments: initialComments = [] }) => {
         <PageHeader title={title}>
           {description && (
             <div className="content">
-              {description}
+              <WithCode>{description}</WithCode>
             </div>
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>

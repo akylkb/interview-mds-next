@@ -4,7 +4,7 @@ exports.loginRequired = async (ctx, next) => {
   return passport.authenticate('jwt', async (err, user) => {
     if (err) {
       console.error(err)
-      ctx.failure = err.message
+      ctx.failure = 'Не удалось авторизоваться'
       return
     }
     if (user) {
@@ -21,7 +21,7 @@ exports.adminRequired = async (ctx, next) => {
   return passport.authenticate('jwt', async (err, user) => {
     if (err) {
       ctx.status = 500
-      ctx.failure = err.message
+      ctx.failure = 'Не удалось авторизоваться'
       console.log(err)
       return
     }

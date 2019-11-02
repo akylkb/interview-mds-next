@@ -1,3 +1,5 @@
+const koaBody = require('koa-body')
+const path = require('path')
 const UserController = require('../http/controllers/userController')
 const QuestionController = require('../http/controllers/questionController')
 const CommentController = require('../http/controllers/commentController')
@@ -119,4 +121,15 @@ module.exports = (server, router, passport) => {
   )
 
   router.get('/cron/update-rating', Croncontroller.updateRating)
+
+  router.post('/api/upload-avatar',
+    loginRequired,
+    koaBody({
+      multipart: true,
+      formidable: {
+        uploadDir: path.join(__dirname, '../../uploads')
+      }
+    }),
+    UserController.uploadAvatar
+  )
 }

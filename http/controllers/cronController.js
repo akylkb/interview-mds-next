@@ -8,14 +8,12 @@ module.exports = class CronController {
         answers,
         correct
       } = await User.getCounts(user.id)
-      questions = questions > 100 ? 100 : questions
-      answers = answers > 100 ? 100 : answers
-      correct = correct > 100 ? 100 : correct
+      answers = answers / 5
       const total = questions + answers + correct
-      const rating = Math.floor(total / 3)
+      const rating = Math.floor((total / 60) * 100)
 
       await user.save({
-        rating
+        rating: rating > 100 ? 100 : rating
       })
     })
     ctx.body = 'ok'

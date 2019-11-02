@@ -33,7 +33,7 @@ const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize
           <div className="Avatar-wrap-left">
             <div className="Avatar-image">
               {!image && (
-                <img src="/static/user.png" alt="" />
+                <img className="default" src="/static/user.png" alt="" />
               )}
               {image && (
                 <img src={image} alt="" />
@@ -81,6 +81,9 @@ const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize
           border-radius: 50%;
           color: white;
           overflow: hidden;
+        }
+        .Avatar-image > img.default {
+          padding: 0.18em;
         }
         .Avatar-image > img {
           width: 1em;

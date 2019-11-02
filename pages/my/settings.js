@@ -1,17 +1,21 @@
 import { useState, useContext } from 'react'
 import axios from 'axios'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
 import Layout from '../../components/layout'
 import PageHeader from '../../components/page-header'
 import Box from '../../components/box'
 import Notify from '../../components/notify'
 import { serializeForm } from '../../utils/helpers'
 import { UserContext } from '../../components/user-context'
+import Icon from '../../components/icon'
+import Avatar from '../../components/avatar'
 
 const Settings = () => {
   const [user, updateUser] = useContext(UserContext)
   const [loading, setLoading] = useState(false)
   const [messageForProfile, setMessageForProfile] = useState(null)
   const [messageForPassword, setMessageForPassword] = useState(null)
+  const [updatedAvatar, setUpdatedAvatar] = useState(null)
 
   const handleSubmitProfile = event => {
     event.preventDefault()
@@ -56,12 +60,55 @@ const Settings = () => {
       })
   }
 
+  const handleChangeAvatar = event => {
+    setLoading(true)
+    const formData = new FormData()
+    const file = event.target.files[0]
+    formData.append('file', file)
+    axios.post('/api/upload-avatar', formData)
+      .then(response => {
+        const avatarUrl = response.data.message
+        setUpdatedAvatar(avatarUrl)
+      })
+      .catch(err => {
+        setLoading(false)
+        console.error(err)
+      })
+  }
+
   return (
     <Layout>
       <PageHeader title="Настройки" />
       <Box>
         <form onSubmit={handleSubmitProfile}>
           <h4 className="title is-4">Профиль</h4>
+
+          <div className="field">
+            <label className="label">Аватар</label>
+            <Avatar id={user.id} image={updatedAvatar || user.avatar} size={80} />
+            <div className="control">
+              <div className="file">
+                <label className="file-label">
+                  <input
+                    onChange={handleChangeAvatar}
+                    className="file-input"
+                    type="file"
+                    name="avatar"
+                    accept="image/jpeg,image/png,image/gif"
+                  />
+                  <span className="file-cta">
+                    <span className="file-icon">
+                      <Icon name={faFile} />
+                    </span>
+                    <span className="file-label">
+                      Выберите файл…
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div className="field">
             <label className="label">Отображаемое имя</label>
             <div className="control">

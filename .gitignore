@@ -7,3 +7,4 @@ node_modules
 /tmp
 package-lock.json
 work.code-workspace
+/uploads/*

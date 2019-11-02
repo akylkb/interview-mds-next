@@ -5,6 +5,7 @@ import Layout from '../components/layout'
 import PageHeader from '../components/page-header'
 import Box from '../components/box'
 import Notify from '../components/notify'
+import Editor from '../components/editor-no-form'
 
 const AddQuestion = () => {
   const [isLoading, hasLoading] = useState(false)
@@ -74,20 +75,14 @@ const AddQuestion = () => {
           <div className="field">
             <label className="label">Описание для пользователей (необязательно)</label>
             <div className="control">
-              <textarea
-                name="description"
-                className="textarea"
-              />
+              <Editor textareaName="description" />
             </div>
           </div>
 
           <div className="field">
             <label className="label">Ответ (необязательно)</label>
             <div className="control">
-              <textarea
-                name="answer"
-                className="textarea"
-              />
+              <Editor textareaName="answer" />
             </div>
           </div>
 

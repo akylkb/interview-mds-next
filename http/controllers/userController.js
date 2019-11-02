@@ -1,4 +1,5 @@
 const md5 = require('md5')
+const path = require('path')
 const Mailer = require('../utils/mailer')
 const User = global.bookshelf.model('User')
 const QuestionComment = global.bookshelf.model('QuestionComment')
@@ -172,6 +173,19 @@ class UserController {
     } catch (err) {
       ctx.failure = err.message
       console.error(err)
+    }
+  }
+
+  static async uploadAvatar (ctx) {
+    try {
+      const { user } = ctx.state
+      const { file } = ctx.request.files
+      const basename = path.basename(file.path)
+      const publicUrl = `/uploads/${basename}`
+      await User.update({ avatar: publicUrl }, { id: user.id })
+      ctx.success = publicUrl
+    } catch (err) {
+      ctx.failure = 'Не удалось загрузить аватар'
     }
   }
 }
