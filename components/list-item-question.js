@@ -51,7 +51,7 @@ const ListItemQuestion = ({ item }) => {
   return (
     <div className="item">
       <div className="item-avatar">
-        <Avatar id={user.id} rating={user.rating} />
+        <Avatar id={user.id} image={user.avatar} rating={user.rating} />
       </div>
 
       <div className="item-title">

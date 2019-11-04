@@ -55,7 +55,7 @@ const ListItemComment = ({ item, onDelete, onMark }) => {
   return (
     <article className={`media ${item.marked ? 'is-mark' : ''}`}>
       <div className="media-left">
-        <Avatar id={user.id} image={user.avatar} />
+        <Avatar id={user.id} image={user.avatar} rating={user.rating} />
       </div>
       <div className="media-content">
         <div className="content">

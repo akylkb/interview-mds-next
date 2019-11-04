@@ -25,7 +25,7 @@ const renderStars = (rating) => {
   return ''
 }
 
-const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize = 12 }) => {
+const Avatar = ({ id, image = null, rating = 0, name = null, size = 35, starSize = 10 }) => {
   return (
     <>
       <Link href={`/users/${id}`}>
