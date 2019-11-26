@@ -30,7 +30,7 @@ exports.up = function (knex) {
       table.text('content').notNullable()
       table.timestamp('created_at').defaultTo(knex.fn.now())
       table.timestamp('updated_at').defaultTo(knex.fn.now())
-
+      table.string('guest_name', 100)
       table.foreign('user_id').references('users.id')
       table.foreign('question_id').references('questions.id').onDelete('CASCADE')
     })

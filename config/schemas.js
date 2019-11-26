@@ -4,7 +4,7 @@ module.exports = {
 
   signin: Joi.object({
     email: Joi.string().email().required().label('Email'),
-    password: Joi.string().min(6).required().label('Пароль'),
+    password: Joi.string().min(6).required().label('Пароль')
   }),
 
   signup: Joi.object({
@@ -23,7 +23,8 @@ module.exports = {
   }),
 
   comment: Joi.object({
-    content: Joi.string().required()
+    content: Joi.string().required(),
+    guest_name: Joi.string().default(null).empty('')
   }),
 
   updateUser: Joi.object({

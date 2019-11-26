@@ -6,7 +6,7 @@ const CommentController = require('../http/controllers/commentController')
 const AdminController = require('../http/controllers/adminController')
 const Croncontroller = require('../http/controllers/cronController')
 const validator = require('./middlewares/validator')
-const { loginRequired, adminRequired } = require('./middlewares/auth')
+const { loginRequired, adminRequired, guestOrUser } = require('./middlewares/auth')
 const schemas = require('./schemas')
 const token = require('../http/utils/token')
 
@@ -85,7 +85,7 @@ module.exports = (server, router, passport) => {
   router.get('/api/questions', QuestionController.findAll)
   router.get('/api/questions/:id', QuestionController.findById)
   router.post('/api/questions',
-    loginRequired,
+    guestOrUser,
     validator(schemas.question),
     QuestionController.create
   )
@@ -100,7 +100,7 @@ module.exports = (server, router, passport) => {
   )
   router.get('/api/questions/:questionId/comments', QuestionController.findComments)
 
-  router.get('/api/like/question/:id', loginRequired, async ctx => {
+  router.get('/api/like/question/:id', guestOrUser, async ctx => {
     const QuestionLike = global.bookshelf.model('QuestionLike')
     const { id } = ctx.params
     const { user } = ctx.state
@@ -115,7 +115,7 @@ module.exports = (server, router, passport) => {
   })
 
   router.post('/api/comment/question/:id',
-    loginRequired,
+    guestOrUser,
     validator(schemas.comment),
     CommentController.createForQuestion
   )

@@ -1,7 +1,9 @@
 const bodyParser = require('koa-bodyparser')
+// const session = require('koa-session')
 const jsonResponse = require('./middlewares/json-response')
 
 module.exports = (server, router) => {
+  // server.keys = ['WkRdwk4BswNiyGKlsX3l']
   // server.use(boom())
   server.use(async (ctx, next) => {
     try {
@@ -16,6 +18,7 @@ module.exports = (server, router) => {
     }
   })
 
+  // server.use(session({}, server))
   server.use(jsonResponse())
   server.use(bodyParser())
 }

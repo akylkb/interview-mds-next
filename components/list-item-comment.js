@@ -20,7 +20,7 @@ const ListItemComment = ({ item, onDelete, onMark }) => {
     const replyTextarea = window.document.querySelector('#reply-form textarea')
     if (replyTextarea) {
       if (replyTextarea.value === '') {
-        replyTextarea.value = `${user.name}, `
+        replyTextarea.value = `${item.guest_name || user.name}, `
       }
 
       replyTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -60,7 +60,7 @@ const ListItemComment = ({ item, onDelete, onMark }) => {
       <div className="media-content">
         <div className="content">
           <p>
-            <strong>{user.name || 'Anonim'}</strong> <small>{formatDate(item.created_at)}</small>
+            <strong>{item.guest_name || user.name || 'Anonim'}</strong> <small>{formatDate(item.created_at)}</small>
             <div style={{ whiteSpace: 'pre-wrap', marginTop: 10 }}><WithCode>{content}</WithCode></div>
           </p>
         </div>

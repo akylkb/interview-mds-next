@@ -3,6 +3,7 @@ exports.up = function (knex) {
   return knex.schema.createTable('users', table => {
     table.increments('id').primary()
     table.string('name', 100)
+    table.string('second_name', 100)
     table.text('description')
     table.string('email')
     table.string('avatar')

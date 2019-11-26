@@ -17,6 +17,21 @@ exports.loginRequired = async (ctx, next) => {
   })(ctx)
 }
 
+exports.guestOrUser = async (ctx, next) => {
+  return passport.authenticate('jwt', async (err, user) => {
+    if (err) {
+      console.error(err)
+    }
+    if (user) {
+      ctx.login(user)
+    } else {
+      // guest
+      ctx.login({ id: 2, group: 'guest' })
+    }
+    await next()
+  })(ctx)
+}
+
 exports.adminRequired = async (ctx, next) => {
   return passport.authenticate('jwt', async (err, user) => {
     if (err) {

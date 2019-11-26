@@ -1,17 +1,26 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { serializeForm } from '../utils/helpers'
 import Icon from './icon'
 import Notify from './notify'
 import WithCode from './with-code'
+import { UserContext } from './user-context'
+import * as storage from '../utils/storage'
 
-const Editor = ({ submitURL, onSuccess }) => {
+const Editor = ({ submitURL, onSuccess, fields = [] }) => {
+  const [user] = useContext(UserContext)
+  const [guestName, setGuestName] = useState('')
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [isPreview, hasPreview] = useState(false)
+
+  useEffect(() => {
+    const guest = storage.getGuest()
+    setGuestName(guest.name)
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -52,19 +61,50 @@ const Editor = ({ submitURL, onSuccess }) => {
     setText(`${text}${bbCode}`)
   }
 
+  const handleChangeGuestName = ({ target }) => {
+    storage.setGuest({ name: target.value })
+    setGuestName(target.value)
+  }
+
   return (
     <div className="Editor">
       <form id="reply-form" onSubmit={handleSubmit}>
+        {fields.map((field, index) => {
+          return (
+            <div key={index} className="field">
+              <div className="control">
+                <input {...field} className="input" />
+              </div>
+            </div>
+          )
+        })}
+
+        {!user && (
+          <div className="field">
+            <div className="control">
+              <input
+                name="guest_name"
+                placeholder="Ваше имя"
+                value={guestName}
+                onChange={handleChangeGuestName}
+                className="input"
+              />
+            </div>
+          </div>
+        )}
+
         <div className="field">
-          <div class="buttons">
+          <div className="buttons">
             <a
               onClick={() => onClickBBCode(String.raw`[latex] x^2 [/latex]`)}
-              class="button is-small"
-            >LaTeX</a>
+              className="button is-small"
+            >LaTeX
+            </a>
             <a
               onClick={() => onClickBBCode('[code][/code]')}
-              class="button is-small"
-            >Code</a>
+              className="button is-small"
+            >Code
+            </a>
           </div>
         </div>
 
@@ -88,6 +128,7 @@ const Editor = ({ submitURL, onSuccess }) => {
             {isPreview ? <Icon name={faEyeSlash} /> : <Icon name={faEye} />}&nbsp;Предпросмотр
           </button>
         </div>
+
       </form>
 
       {isPreview && (
@@ -130,7 +171,8 @@ const Editor = ({ submitURL, onSuccess }) => {
 }
 
 Editor.propTypes = {
-  submitURL: PropTypes.string.isRequired
+  submitURL: PropTypes.string.isRequired,
+  fields: PropTypes.array
 }
 
 export default Editor
