@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
 import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons'
@@ -85,6 +85,10 @@ const AdminQuestions = ({ data }) => {
     const updated = items.filter(item => item.id !== id)
     setItems(updated)
   }
+
+  useEffect(() => {
+    setItems(data.items)
+  }, [data])
 
   return (
     <Layout>

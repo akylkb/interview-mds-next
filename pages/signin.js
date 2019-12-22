@@ -34,7 +34,7 @@ const Signin = () => {
   return (
     <Layout>
       <PageHeader title="Привет! Мы рады видеть тебя снова">
-        <div className="title is-6">Еще незарегистрированы? <Link href="/signup"><a>Регистрация</a></Link></div>
+        <div className="title is-6">Еще не зарегистрированы? <Link href="/signup"><a>Регистрация</a></Link></div>
       </PageHeader>
 
       <section>
