@@ -7,6 +7,7 @@ const AdminController = require('../http/controllers/adminController')
 const Croncontroller = require('../http/controllers/cronController')
 const validator = require('./middlewares/validator')
 const { loginRequired, adminRequired, guestOrUser } = require('./middlewares/auth')
+const { getGuestHash } = require('../http/utils/helpers')
 const schemas = require('./schemas')
 const token = require('../http/utils/token')
 
@@ -104,14 +105,26 @@ module.exports = (server, router, passport) => {
     const QuestionLike = global.bookshelf.model('QuestionLike')
     const { id } = ctx.params
     const { user } = ctx.state
-    ctx.status = await QuestionLike.createOrDelete(user.id, id)
+
+    let guestHash = null
+    if (user.id === 2) {
+      guestHash = getGuestHash(ctx.request.header['user-agent'])
+    }
+
+    ctx.status = await QuestionLike.createOrDelete(user.id, id, guestHash)
   })
 
-  router.get('/api/like/comment/:id', loginRequired, async ctx => {
+  router.get('/api/like/comment/:id', guestOrUser, async ctx => {
     const QuestionCommentLike = global.bookshelf.model('QuestionCommentLike')
     const { id } = ctx.params
     const { user } = ctx.state
-    ctx.status = await QuestionCommentLike.createOrDelete(user.id, id)
+
+    let guestHash = null
+    if (user.id === 2) {
+      guestHash = getGuestHash(ctx.request.header['user-agent'])
+    }
+
+    ctx.status = await QuestionCommentLike.createOrDelete(user.id, id, guestHash)
   })
 
   router.post('/api/comment/question/:id',

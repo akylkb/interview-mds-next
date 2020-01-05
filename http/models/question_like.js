@@ -11,8 +11,11 @@ class QuestionLike extends global.bookshelf.Model {
     this.belongsTo('Question')
   }
 
-  static async createOrDelete (userId, questionId) {
-    const query = { user_id: userId, question_id: questionId }
+  static async createOrDelete (userId, questionId, guestHash) {
+    let query = { user_id: userId, question_id: questionId }
+    if (guestHash) {
+      query = { question_id: questionId, guest_hash: guestHash }
+    }
     try {
       await this.forge().where(query).fetch()
       await this.forge().where(query).destroy()

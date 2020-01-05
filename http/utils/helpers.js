@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const assert = require('assert')
 const bcrypt = require('bcrypt')
+const md5 = require('md5')
 
 const clearData = (obj, allowedKeys = []) => {
   assert(_.isObject(obj))
@@ -27,8 +28,16 @@ const asyncCheckHash = async (text, hash) => {
   return result
 }
 
+const getGuestHash = (userAgent = null) => {
+  if (userAgent) {
+    return md5(userAgent)
+  }
+  return null
+}
+
 module.exports = {
   clearData,
   asyncGenerateHash,
-  asyncCheckHash
+  asyncCheckHash,
+  getGuestHash
 }

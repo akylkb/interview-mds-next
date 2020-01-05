@@ -15,8 +15,11 @@ class QuestionCommentLike extends global.bookshelf.Model {
     this.belongsTo('User')
   }
 
-  static async createOrDelete (userId, commentId) {
-    const query = { user_id: userId, question_comment_id: commentId }
+  static async createOrDelete (userId, commentId, guestHash) {
+    let query = { user_id: userId, question_comment_id: commentId }
+    if (guestHash) {
+      query = { question_comment_id: commentId, guest_hash: guestHash }
+    }
     try {
       await this.forge().where(query).fetch()
       await this.forge().where(query).destroy()

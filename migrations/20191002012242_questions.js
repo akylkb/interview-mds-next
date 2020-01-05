@@ -16,8 +16,9 @@ exports.up = function (knex) {
     })
     .createTable('question_likes', table => {
       table.increments('id').primary()
-      table.integer('user_id').unsigned().notNullable()
+      table.integer('user_id').unsigned()
       table.integer('question_id').unsigned().notNullable()
+      table.string('guest_hash', 35)
 
       table.foreign('user_id').references('users.id')
       table.foreign('question_id').references('questions.id').onDelete('CASCADE')
@@ -36,8 +37,9 @@ exports.up = function (knex) {
     })
     .createTable('question_comment_likes', table => {
       table.increments('id').primary()
-      table.integer('user_id').unsigned().notNullable()
+      table.integer('user_id').unsigned()
       table.integer('question_comment_id').unsigned().notNullable()
+      table.string('guest_hash', 35)
 
       table.foreign('user_id').references('users.id')
       table.foreign('question_comment_id').references('question_comments.id').onDelete('CASCADE')
